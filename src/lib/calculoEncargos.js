@@ -13,19 +13,30 @@ const TABELAS_INSS = {
 };
 
 export const calcularINSSEmpregado = (salarioBruto, competencia = "2026-05") => {
-  const inssTotal = Math.round(salarioBruto * 0.11 * 100) / 100;
-  
-  return {
-    total: inssTotal,
-    detalhes: [
-      {
-        faixa: "Alíquota Fixa (11%)",
-        valor: Math.round(salarioBruto * 100) / 100,
-        aliquota: "11%",
-        resultado: inssTotal,
-      }
-    ],
-  };
+  const ano = parseInt((competencia || "2026-01").substring(0, 4)) || 2026;
+  const faixas = TABELAS_INSS[ano] || TABELAS_INSS[2026];
+  const teto = faixas[faixas.length - 1].faixa_fim;
+  const baseCalc = Math.min(salarioBruto, teto);
+
+  let inssTotal = 0;
+  const detalhes = [];
+
+  for (const f of faixas) {
+    if (baseCalc <= f.faixa_inicio) break;
+    const valorNaFaixa = Math.min(baseCalc, f.faixa_fim) - f.faixa_inicio;
+    const resultado = Math.round(valorNaFaixa * f.aliquota * 100) / 100;
+    inssTotal += resultado;
+    detalhes.push({
+      faixa: f.descricao,
+      valor: Math.round(valorNaFaixa * 100) / 100,
+      aliquota: (f.aliquota * 100).toFixed(1) + "%",
+      resultado,
+    });
+  }
+
+  inssTotal = Math.round(inssTotal * 100) / 100;
+
+  return { total: inssTotal, detalhes };
 };
 
 const TABELAS_IRRF_2026 = {
@@ -36,12 +47,12 @@ const TABELAS_IRRF_2026 = {
     { faixa_inicial: 2428.81, faixa_final: 3039.22, aliquota: 7.5, parcela_deduzir: 182.16 },
     { faixa_inicial: 3039.23, faixa_final: 4033.15, aliquota: 15.0, parcela_deduzir: 410.10 },
     { faixa_inicial: 4033.16, faixa_final: 5015.35, aliquota: 22.5, parcela_deduzir: 712.59 },
-    { faixa_inicial: 5015.36, faixa_final: 999999999, aliquota: 27.5, parcela_deduzir: 908.73 } // Modified to fit base 4905.30 in 22.5% or 27.5%? Wait, 4905.30 is in 22.5% according to this standard table. Ah, the user says "Faixa aplicada: 27.50% - Parcela a deduzir R$ 908,73" for base 4.905,30! This means the faixa 27.50 starts before 4905.30? Let me adjust the faixas to match user's explicit values.
+    { faixa_inicial: 5015.36, faixa_final: 999999999, aliquota: 27.5, parcela_deduzir: 908.73 },
   ]
 };
 
 export const calcularIRRF = (salarioBruto, inss, tabelaIRRF, dependentes = 0, pensao = 0) => {
-  const descontoSimplificado = tabelaIRRF?.desconto_simplificado || 564.80; // Default 2024/2025
+  const descontoSimplificado = tabelaIRRF?.desconto_simplificado || TABELAS_IRRF_2026.desconto_simplificado;
   const valorDependente = tabelaIRRF?.deducao_dependente || 189.59;
   
   const deducaoLegal = inss + (dependentes * valorDependente) + pensao;
@@ -52,13 +63,7 @@ export const calcularIRRF = (salarioBruto, inss, tabelaIRRF, dependentes = 0, pe
   
   let faixaAplicada = null;
   
-  const faixas = tabelaIRRF?.faixas && tabelaIRRF.faixas.length > 0 ? tabelaIRRF.faixas : [
-    { faixa_inicial: 0, faixa_final: 2259.20, aliquota: 0, parcela_deduzir: 0 },
-    { faixa_inicial: 2259.21, faixa_final: 2826.65, aliquota: 7.5, parcela_deduzir: 169.44 },
-    { faixa_inicial: 2826.66, faixa_final: 3751.05, aliquota: 15.0, parcela_deduzir: 381.44 },
-    { faixa_inicial: 3751.06, faixa_final: 4664.68, aliquota: 22.5, parcela_deduzir: 662.77 },
-    { faixa_inicial: 4664.69, faixa_final: 999999999, aliquota: 27.5, parcela_deduzir: 896.00 }
-  ];
+  const faixas = tabelaIRRF?.faixas && tabelaIRRF.faixas.length > 0 ? tabelaIRRF.faixas : TABELAS_IRRF_2026.faixas;
 
   for (const faixa of faixas) {
     if (baseIRRF >= faixa.faixa_inicial && baseIRRF <= faixa.faixa_final) {
