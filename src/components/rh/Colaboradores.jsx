@@ -9,7 +9,16 @@ const statusConfig = {
   inativo: { label: "Inativo", color: "text-muted-foreground", bg: "bg-muted" },
   ferias: { label: "Férias", color: "text-blue-400", bg: "bg-blue-400/10" },
   afastado: { label: "Afastado", color: "text-yellow-400", bg: "bg-yellow-400/10" },
+  Ativo: { label: "Ativo", color: "text-green-400", bg: "bg-green-400/10" },
+  Inativo: { label: "Inativo", color: "text-muted-foreground", bg: "bg-muted" },
 };
+
+const FILTROS_TIPO = [
+  { value: "todos", label: "Todos" },
+  { value: "CLT", label: "CLT" },
+  { value: "sem_clt", label: "Sem CLT" },
+  { value: "prestadores", label: "Prestadores" },
+];
 
 const fmt = (v) => new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(v || 0);
 const fmtDate = (d) => d ? new Date(d + "T00:00:00").toLocaleDateString("pt-BR") : "-";
@@ -171,27 +180,46 @@ function ColaboradorModal({ colaborador, onClose, onSave }) {
 
 export default function Colaboradores() {
   const [colaboradores, setColaboradores] = useState([]);
+  const [prestadores, setPrestadores] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState("todos");
+  const [filterTipo, setFilterTipo] = useState("todos");
   const [modalOpen, setModalOpen] = useState(false);
   const [editItem, setEditItem] = useState(null);
   const [selected, setSelected] = useState(new Set());
 
   const load = async () => {
     setLoading(true);
-    const data = await base44.entities.Colaborador.list("-created_date");
-    setColaboradores(data);
+    const [colabs, prests] = await Promise.all([
+      base44.entities.Colaborador.list("-created_date"),
+      base44.entities.PrestadorServico.list("-created_date"),
+    ]);
+    setColaboradores(colabs);
+    setPrestadores(prests);
     setLoading(false);
   };
 
   useEffect(() => { load(); }, []);
 
-  const filtered = colaboradores.filter(c => {
+  const isPrestadorView = filterTipo === "prestadores";
+
+  const filteredColabs = colaboradores.filter(c => {
     const matchSearch = c.nome?.toLowerCase().includes(search.toLowerCase()) || c.cargo?.toLowerCase().includes(search.toLowerCase());
     const matchStatus = filterStatus === "todos" || c.status === filterStatus;
+    let matchTipo = true;
+    if (filterTipo === "CLT") matchTipo = c.tipo_contrato === "CLT";
+    else if (filterTipo === "sem_clt") matchTipo = c.tipo_contrato !== "CLT";
+    return matchSearch && matchStatus && matchTipo;
+  });
+
+  const filteredPrestadores = prestadores.filter(p => {
+    const matchSearch = p.nome?.toLowerCase().includes(search.toLowerCase()) || p.cargo_funcao?.toLowerCase().includes(search.toLowerCase());
+    const matchStatus = filterStatus === "todos" || p.status?.toLowerCase() === filterStatus;
     return matchSearch && matchStatus;
   });
+
+  const filtered = isPrestadorView ? filteredPrestadores : filteredColabs;
 
   const handleSave = async (data) => {
     if (data.cpf || data.nome) {
@@ -234,6 +262,7 @@ export default function Colaboradores() {
   };
 
   const ativos = colaboradores.filter(c => c.status === "ativo").length;
+  const prestadoresAtivos = prestadores.filter(p => p.status === "Ativo").length;
 
   return (
     <div>
@@ -242,18 +271,40 @@ export default function Colaboradores() {
           <div className="relative">
             <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
             <input value={search} onChange={e => setSearch(e.target.value)}
-              placeholder="Buscar colaborador..."
+              placeholder={isPrestadorView ? "Buscar prestador..." : "Buscar colaborador..."}
               className="bg-card border border-border rounded-lg pl-9 pr-4 py-2 text-sm text-foreground placeholder-muted-foreground focus:outline-none focus:border-primary w-56" />
           </div>
           <div className="flex gap-1 p-1 bg-muted rounded-lg">
-            {["todos", "ativo", "ferias", "afastado", "inativo"].map(s => (
-              <button key={s} onClick={() => setFilterStatus(s)}
-                className={`px-3 py-1 rounded-md text-xs font-medium transition-all capitalize
- ${filterStatus === s ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}>
-                {s === "todos" ? "Todos" : s === "ferias" ? "Férias" : s.charAt(0).toUpperCase() + s.slice(1)}
+            {FILTROS_TIPO.map(f => (
+              <button key={f.value} onClick={() => { setFilterTipo(f.value); setFilterStatus("todos"); setSelected(new Set()); }}
+                className={`px-3 py-1 rounded-md text-xs font-medium transition-all
+                  ${filterTipo === f.value ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}>
+                {f.label}
               </button>
             ))}
           </div>
+          {!isPrestadorView && (
+            <div className="flex gap-1 p-1 bg-muted rounded-lg">
+              {["todos", "ativo", "ferias", "afastado", "inativo"].map(s => (
+                <button key={s} onClick={() => setFilterStatus(s)}
+                  className={`px-3 py-1 rounded-md text-xs font-medium transition-all capitalize
+                    ${filterStatus === s ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}>
+                  {s === "todos" ? "Todos" : s === "ferias" ? "Férias" : s.charAt(0).toUpperCase() + s.slice(1)}
+                </button>
+              ))}
+            </div>
+          )}
+          {isPrestadorView && (
+            <div className="flex gap-1 p-1 bg-muted rounded-lg">
+              {["todos", "Ativo", "Inativo"].map(s => (
+                <button key={s} onClick={() => setFilterStatus(s === "todos" ? "todos" : s.toLowerCase())}
+                  className={`px-3 py-1 rounded-md text-xs font-medium transition-all
+                    ${filterStatus === (s === "todos" ? "todos" : s.toLowerCase()) ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}>
+                  {s === "todos" ? "Todos" : s}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
         <div className="flex items-center gap-2 flex-wrap">
           {selected.size > 0 && (
@@ -382,7 +433,13 @@ export default function Colaboradores() {
       </div>
 
       <div className="mb-4 text-xs text-muted-foreground">
-        {ativos} colaborador{ativos !== 1 ? "es" : ""} ativo{ativos !== 1 ? "s" : ""}
+        {isPrestadorView
+          ? `${prestadoresAtivos} prestador${prestadoresAtivos !== 1 ? "es" : ""} ativo${prestadoresAtivos !== 1 ? "s" : ""}`
+          : `${ativos} colaborador${ativos !== 1 ? "es" : ""} ativo${ativos !== 1 ? "s" : ""}`
+        }
+        {filtered.length !== (isPrestadorView ? prestadores.length : colaboradores.length) && (
+          <span className="ml-2 text-primary">{filtered.length} exibido{filtered.length !== 1 ? "s" : ""}</span>
+        )}
       </div>
 
       <style>{`
@@ -396,8 +453,79 @@ export default function Colaboradores() {
         ) : filtered.length === 0 ? (
           <div className="text-center py-12 text-muted-foreground">
             <Users size={28} className="mx-auto mb-2 opacity-50" />
-            <p className="text-sm">Nenhum colaborador encontrado</p>
-            <button onClick={() => { setEditItem(null); setModalOpen(true); }} className="mt-2 text-primary text-sm hover:underline">Cadastrar primeiro colaborador</button>
+            <p className="text-sm">{isPrestadorView ? "Nenhum prestador encontrado" : "Nenhum colaborador encontrado"}</p>
+            {!isPrestadorView && (
+              <button onClick={() => { setEditItem(null); setModalOpen(true); }} className="mt-2 text-primary text-sm hover:underline">Cadastrar primeiro colaborador</button>
+            )}
+          </div>
+        ) : isPrestadorView ? (
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-border">
+                  <th className="text-left text-xs text-muted-foreground px-4 py-3 w-8">
+                    <input type="checkbox" checked={selected.size === filtered.length && filtered.length > 0}
+                      onChange={() => {
+                        if (selected.size === filtered.length) setSelected(new Set());
+                        else setSelected(new Set(filtered.map(p => p.id)));
+                      }}
+                      className="cursor-pointer" />
+                  </th>
+                  <th className="text-left text-xs text-muted-foreground px-4 py-3">Prestador</th>
+                  <th className="text-left text-xs text-muted-foreground px-4 py-3">Função</th>
+                  <th className="text-left text-xs text-muted-foreground px-4 py-3">Tipo</th>
+                  <th className="text-left text-xs text-muted-foreground px-4 py-3">CPF / CNPJ</th>
+                  <th className="text-right text-xs text-muted-foreground px-4 py-3">Valor Contrato</th>
+                  <th className="text-left text-xs text-muted-foreground px-4 py-3">Status</th>
+                  <th className="text-right text-xs text-muted-foreground px-4 py-3">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map(p => {
+                  const s = statusConfig[p.status] || statusConfig.ativo;
+                  return (
+                    <tr key={p.id} className={`border-b border-border/50 transition-colors ${selected.has(p.id) ? "bg-primary/10" : "hover:bg-muted/30"} ${!selected.has(p.id) ? "unselected-row" : ""}`}>
+                      <td className="px-4 py-3">
+                        <input type="checkbox" checked={selected.has(p.id)} onChange={() => {
+                          const newSet = new Set(selected);
+                          if (newSet.has(p.id)) newSet.delete(p.id);
+                          else newSet.add(p.id);
+                          setSelected(newSet);
+                        }} className="cursor-pointer" />
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
+                            <User size={14} className="text-orange-400" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-foreground">{p.nome}</p>
+                            {p.chave_pix && <p className="text-xs text-muted-foreground">PIX: {p.chave_pix}</p>}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 text-sm text-foreground">{p.cargo_funcao || "—"}</td>
+                      <td className="px-4 py-3">
+                        <span className="text-xs px-2 py-0.5 rounded-full bg-orange-400/10 text-orange-400">{p.tipo_contrato || "—"}</span>
+                      </td>
+                      <td className="px-4 py-3 text-sm text-muted-foreground">{p.cpf_cnpj || "—"}</td>
+                      <td className="px-4 py-3 text-right text-sm font-semibold text-foreground">{p.valor_contrato ? fmt(p.valor_contrato) : "—"}</td>
+                      <td className="px-4 py-3">
+                        <span className={`text-xs px-2 py-0.5 rounded-full ${s.bg} ${s.color}`}>{s.label}</span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="flex items-center justify-end gap-3">
+                          <button onClick={() => {
+                            setSelected(new Set([p.id]));
+                            setTimeout(() => window.print(), 100);
+                          }} title="Imprimir" className="text-muted-foreground hover:text-primary"><Printer size={15}/></button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         ) : (
           <div className="overflow-x-auto">
