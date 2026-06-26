@@ -228,8 +228,10 @@ export default function EstoqueProducao({ refresh, onRefresh }) {
         </>
       )}
 
-      {subTab === 2 && selectedOrdem && (
-        <MovimentacaoHistorico ordemId={selectedOrdem.id} />
+      {subTab === 2 && (
+        selectedOrdem
+          ? <MovimentacaoHistorico ordemId={selectedOrdem.id} />
+          : <div className="text-center py-12 text-sm text-muted-foreground">Clique em "Hist." em uma ordem de produção para ver o histórico.</div>
       )}
 
       {fichaModal && <FichaTecnicaModal ficha={editFicha} onClose={() => { setFichaModal(false); setEditFicha(null); }} onSave={handleSaveFicha} />}

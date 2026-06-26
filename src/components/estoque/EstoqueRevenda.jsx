@@ -33,20 +33,19 @@ export default function EstoqueRevenda({ refresh, onRefresh }) {
 
   const handleSave = async (data) => {
     if (editProduto) {
-      setProdutos(prev => prev.map(p => p.id === editProduto.id ? { ...editProduto, ...data } : p));
-      setModalOpen(false); setEditProduto(null);
-      base44.entities.ProdutoServico.update(editProduto.id, data);
+      await base44.entities.ProdutoServico.update(editProduto.id, data);
     } else {
-      setModalOpen(false); setEditProduto(null);
-      const novo = await base44.entities.ProdutoServico.create({ ...data, classificacao: "Revenda" });
-      setProdutos(prev => [novo, ...prev]);
+      await base44.entities.ProdutoServico.create({ ...data, classificacao: "Revenda" });
     }
+    setModalOpen(false);
+    setEditProduto(null);
+    loadProdutos();
   };
 
   const handleDelete = async (id) => {
     if (!confirm("Excluir este produto?")) return;
-    setProdutos(prev => prev.filter(p => p.id !== id));
-    base44.entities.ProdutoServico.delete(id);
+    await base44.entities.ProdutoServico.delete(id);
+    loadProdutos();
   };
 
   if (loading) {

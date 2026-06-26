@@ -202,10 +202,10 @@ function NotaModal({ nota, onClose, onSave }) {
 
           <div className="flex gap-3 pt-2">
             <button type="button" onClick={onClose} className="flex-1 py-2.5 rounded-lg text-sm bg-muted text-muted-foreground">Cancelar</button>
-            <button type="button" onClick={() => {
-              setForm(f => ({ ...f, situacao: "Rascunho" }));
-              const fakeEvent = { preventDefault: () => {} };
-              handleSubmit(fakeEvent);
+            <button type="button" onClick={async () => {
+              setSaving(true);
+              await onSave({ ...form, situacao: "Rascunho", valor_total: Math.round(total * 100) / 100 });
+              setSaving(false);
             }} disabled={saving} className="flex-1 py-2.5 rounded-lg text-sm bg-muted border border-border text-foreground hover:bg-card disabled:opacity-50">
               {saving ? "Salvando..." : "Salvar Rascunho"}
             </button>
