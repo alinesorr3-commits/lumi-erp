@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { Plus, Pencil, Trash2, Package, Truck, User, Car, Building2, Search, Lock, Upload } from "lucide-react";
+import VeiculosFrota from "@/components/veiculos/VeiculosFrota";
 import CertificadoA1 from "./CertificadoA1";
 import ImportarProdutos from "./ImportarProdutos";
 import SugestorIA from "./SugestorIA";
@@ -377,71 +378,7 @@ function MotoristasTab() {
 }
 
 function VeiculosTab() {
-  const [items, setItems] = useState([]);
-  const [modal, setModal] = useState(false);
-  const [edit, setEdit] = useState(null);
-  const [form, setForm] = useState({});
-
-  useEffect(() => { base44.entities.VeiculoTransporte.list().then(setItems); }, []);
-
-  const save = async (e) => {
-    e.preventDefault();
-    if (edit) await base44.entities.VeiculoTransporte.update(edit.id, form);
-    else await base44.entities.VeiculoTransporte.create(form);
-    setModal(false); setEdit(null);
-    base44.entities.VeiculoTransporte.list().then(setItems);
-  };
-  const openNew = () => { setForm({ tipo: "01-Caminhão", ativo: true }); setEdit(null); setModal(true); };
-  const openEdit = (item) => { setForm({ ...item }); setEdit(item); setModal(true); };
-  const del = async (id) => { if (!confirm("Excluir?")) return; await base44.entities.VeiculoTransporte.delete(id); base44.entities.VeiculoTransporte.list().then(setItems); };
-  const f = (k, v) => setForm(prev => ({ ...prev, [k]: v }));
-
-  return (
-    <div>
-      <div className="flex justify-between mb-3">
-        <h3 className="text-sm font-semibold text-foreground">Veículos de Transporte</h3>
-        <button onClick={openNew} className="flex items-center gap-1.5 px-3 py-1.5 bg-primary text-primary-foreground rounded-lg text-xs hover:bg-primary/90"><Plus size={12} /> Novo</button>
-      </div>
-      <div className="space-y-2">
-        {items.map(item => (
-          <div key={item.id} className="flex items-center justify-between p-3 bg-card border border-border rounded-lg">
-            <div>
-              <p className="text-sm font-medium text-foreground">{item.placa}/{item.uf_placa}</p>
-              <p className="text-xs text-muted-foreground">{item.tipo} · RNTRC: {item.rntrc || "—"} · {item.capacidade_kg || 0}kg</p>
-            </div>
-            <div className="flex gap-2">
-              <button onClick={() => openEdit(item)} className="p-1 text-muted-foreground hover:text-foreground"><Pencil size={13} /></button>
-              <button onClick={() => del(item.id)} className="p-1 text-red-400 hover:text-red-300"><Trash2 size={13} /></button>
-            </div>
-          </div>
-        ))}
-        {items.length === 0 && <p className="text-center py-8 text-sm text-muted-foreground">Nenhum veículo cadastrado</p>}
-      </div>
-      {modal && (
-        <Modal title={edit ? "Editar Veículo" : "Novo Veículo"} onClose={() => setModal(false)}>
-          <form onSubmit={save} className="grid grid-cols-2 gap-3">
-            <div><label className="block text-xs text-muted-foreground mb-1">Placa *</label><input required {...inp(form.placa, v => f("placa", v))} /></div>
-            <div><label className="block text-xs text-muted-foreground mb-1">UF da Placa *</label><input required maxLength={2} {...inp(form.uf_placa, v => f("uf_placa", v))} /></div>
-            <div><label className="block text-xs text-muted-foreground mb-1">RNTRC</label><input {...inp(form.rntrc, v => f("rntrc", v))} /></div>
-            <div>
-              <label className="block text-xs text-muted-foreground mb-1">Tipo</label>
-              <select value={form.tipo || "01-Caminhão"} onChange={e => f("tipo", e.target.value)} className="w-full bg-muted border border-border rounded-lg px-3 py-2 text-sm text-foreground focus:outline-none">
-                {["00-Não Especificado","01-Caminhão","02-Cavalo","03-Reboque","04-Semi-Reboque","05-Outros"].map(t => <option key={t}>{t}</option>)}
-              </select>
-            </div>
-            <div><label className="block text-xs text-muted-foreground mb-1">Tara (kg)</label><input type="number" {...inp(form.tara, v => f("tara", parseFloat(v) || 0))} /></div>
-            <div><label className="block text-xs text-muted-foreground mb-1">Capacidade (kg)</label><input type="number" {...inp(form.capacidade_kg, v => f("capacidade_kg", parseFloat(v) || 0))} /></div>
-            <div><label className="block text-xs text-muted-foreground mb-1">Proprietário</label><input {...inp(form.proprietario_nome, v => f("proprietario_nome", v))} /></div>
-            <div><label className="block text-xs text-muted-foreground mb-1">CNPJ/CPF Proprietário</label><input {...inp(form.proprietario_cnpj_cpf, v => f("proprietario_cnpj_cpf", v))} /></div>
-            <div className="col-span-2 flex gap-3 pt-2">
-              <button type="button" onClick={() => setModal(false)} className="flex-1 py-2 bg-muted text-muted-foreground rounded-lg text-sm">Cancelar</button>
-              <button type="submit" className="flex-1 py-2 bg-primary text-primary-foreground rounded-lg text-sm">Salvar</button>
-            </div>
-          </form>
-        </Modal>
-      )}
-    </div>
-  );
+  return <VeiculosFrota />;
 }
 
 const TABS = [
