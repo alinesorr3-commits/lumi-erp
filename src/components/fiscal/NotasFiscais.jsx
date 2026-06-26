@@ -13,6 +13,7 @@ const situacaoConfig = {
   Autorizada: { color: "text-green-400", bg: "bg-green-400/10" },
   Rejeitada: { color: "text-red-400", bg: "bg-red-400/10" },
   Cancelada: { color: "text-red-400", bg: "bg-red-400/10" },
+  Devolvida: { color: "text-orange-400", bg: "bg-orange-400/10" },
   Denegada: { color: "text-yellow-400", bg: "bg-yellow-400/10" },
 };
 
@@ -201,10 +202,10 @@ function NotaModal({ nota, onClose, onSave }) {
 
           <div className="flex gap-3 pt-2">
             <button type="button" onClick={onClose} className="flex-1 py-2.5 rounded-lg text-sm bg-muted text-muted-foreground">Cancelar</button>
-            <button type="button" onClick={(e) => {
-              e.preventDefault();
+            <button type="button" onClick={() => {
               setForm(f => ({ ...f, situacao: "Rascunho" }));
-              handleSubmit(e);
+              const fakeEvent = { preventDefault: () => {} };
+              handleSubmit(fakeEvent);
             }} disabled={saving} className="flex-1 py-2.5 rounded-lg text-sm bg-muted border border-border text-foreground hover:bg-card disabled:opacity-50">
               {saving ? "Salvando..." : "Salvar Rascunho"}
             </button>
@@ -236,20 +237,52 @@ export default function NotasFiscais() {
 
   const handleSave = async (data) => {
     if (editItem) {
-      setNotas(prev => prev.map(n => n.id === editItem.id ? { ...editItem, ...data } : n));
-      setModal(false); setEditItem(null);
-      base44.entities.NotaFiscalFiscal.update(editItem.id, data);
+      await base44.entities.NotaFiscalFiscal.update(editItem.id, data);
     } else {
-      setModal(false); setEditItem(null);
-      const nova = await base44.entities.NotaFiscalFiscal.create(data);
-      setNotas(prev => [nova, ...prev]);
+      await base44.entities.NotaFiscalFiscal.create(data);
     }
+    setModal(false);
+    setEditItem(null);
+    load();
   };
 
   const handleDelete = async (id) => {
     if (!confirm("Excluir esta nota?")) return;
-    setNotas(prev => prev.filter(n => n.id !== id));
-    base44.entities.NotaFiscalFiscal.delete(id);
+    await base44.entities.NotaFiscalFiscal.delete(id);
+    load();
+  };
+
+  const handleCancelar = async (nota) => {
+    const motivo = prompt("Informe o motivo do cancelamento (mínimo 15 caracteres):");
+    if (!motivo || motivo.length < 15) { alert("Motivo inválido — mínimo 15 caracteres."); return; }
+    await base44.entities.NotaFiscalFiscal.update(nota.id, { situacao: "Cancelada", observacoes: `Cancelada: ${motivo}` });
+    load();
+  };
+
+  const handleDevolucao = async (nota) => {
+    if (!confirm(`Registrar devolução da nota ${nota.numero || "S/N"}?`)) return;
+    await base44.entities.NotaFiscalFiscal.update(nota.id, { situacao: "Devolvida" });
+    await base44.entities.NotaFiscalFiscal.create({
+      tipo_doc: nota.tipo_doc,
+      numero: "",
+      serie: nota.serie,
+      destinatario: nota.destinatario,
+      cnpj_destinatario: nota.cnpj_destinatario,
+      uf_destinatario: nota.uf_destinatario,
+      cfop: nota.cfop,
+      natureza_operacao: "Devolução de Mercadorias",
+      data_emissao: new Date().toISOString().slice(0, 10),
+      valor_produtos: nota.valor_produtos || 0,
+      valor_total: nota.valor_total || 0,
+      valor_icms: nota.valor_icms || 0,
+      valor_pis: nota.valor_pis || 0,
+      valor_cofins: nota.valor_cofins || 0,
+      valor_ipi: nota.valor_ipi || 0,
+      situacao: "Rascunho",
+      observacoes: `Devolução ref. nota nº ${nota.numero || "S/N"}`,
+    });
+    alert("Nota de devolução criada como rascunho.");
+    load();
   };
 
   const parseXML = async (file) => {
@@ -402,8 +435,14 @@ export default function NotasFiscais() {
                       <span className={`text-xs px-2 py-0.5 rounded-full ${s.bg} ${s.color}`}>{n.situacao}</span>
                     </td>
                     <td className="px-4 py-3 text-right">
-                      <div className="flex items-center justify-end gap-2">
+                      <div className="flex items-center justify-end gap-2 flex-wrap">
                         <button onClick={() => { setEditItem(n); setModal(true); }} className="text-xs text-muted-foreground hover:text-foreground">Editar</button>
+                        {n.situacao === "Autorizada" && (
+                          <>
+                            <button onClick={() => handleCancelar(n)} className="text-xs text-yellow-400 hover:underline">Cancelar</button>
+                            <button onClick={() => handleDevolucao(n)} className="text-xs text-orange-400 hover:underline">Devolução</button>
+                          </>
+                        )}
                         <button onClick={() => handleDelete(n.id)} className="text-xs text-red-400 hover:underline">Excluir</button>
                       </div>
                     </td>

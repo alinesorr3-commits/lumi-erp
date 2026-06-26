@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { FileText, BarChart2, Database, Download } from "lucide-react";
 import NFeDashboard from "@/components/nfe/NFeDashboard";
 import NFeEmissao from "@/components/nfe/NFeEmissao";
 import NFeCadastros from "@/components/nfe/NFeCadastros";
 import DocumentosRecebidos from "@/components/nfe/DocumentosRecebidos";
+import NFeListaSaida from "@/components/nfe/NFeListaSaida";
 import PrintButton from "@/components/shared/PrintButton";
 
 const TABS = [
@@ -82,7 +83,7 @@ export default function ModuloNFe() {
         />
       )}
       {tab === "notas" && (
-        <NFeDashboard
+        <NFeListaSaida
           key={refreshKey}
           onNew={() => { setEditNota(null); setEmissaoOpen(true); }}
           onEdit={(nota) => { setEditNota(nota); setEmissaoOpen(true); }}
@@ -91,11 +92,11 @@ export default function ModuloNFe() {
       {tab === "recebidas" && <DocumentosRecebidos />}
       {tab === "cadastros" && <NFeCadastros />}
 
-      {emissaoOpen && tab === "notas" && (
+      {emissaoOpen && (
         <NFeEmissao
           nota={editNota}
           onClose={() => { setEmissaoOpen(false); setEditNota(null); }}
-          onSaved={handleSaved}
+          onSaved={() => { setEmissaoOpen(false); setEditNota(null); handleSaved(); }}
         />
       )}
     </div>
