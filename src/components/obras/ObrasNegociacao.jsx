@@ -160,6 +160,7 @@ export default function ObrasNegociacao() {
   const [editItem, setEditItem] = useState(null);
   const [filtroObra, setFiltroObra] = useState("");
   const [filtroForma, setFiltroForma] = useState("");
+  const [sincronizando, setSincronizando] = useState(false);
 
   const load = () => {
     setLoading(true);
@@ -169,13 +170,74 @@ export default function ObrasNegociacao() {
   };
   useEffect(() => { load(); }, []);
 
+  const sincronizarBemRecebido = async (negociacaoId, negociacaoData) => {
+    const isPermuta = negociacaoData.forma_recebimento === "Permuta/Bem" || negociacaoData.classificacao === "Permuta";
+    if (!isPermuta || !negociacaoData.descricao_bem) return;
+
+    const destinoParaCategoria = {
+      "Estoque Próprio": "outro",
+      "Revenda Posterior": "mercadoria",
+      "Ativo Imobilizado": "outro",
+    };
+
+    const payload = {
+      descricao: negociacaoData.descricao_bem,
+      categoria: destinoParaCategoria[negociacaoData.destino_bem] || "outro",
+      quantidade: 1,
+      valor_avaliacao: parseFloat(negociacaoData.valor_bem) || 0,
+      data_entrada: negociacaoData.data || new Date().toISOString().slice(0, 10),
+      cliente_fornecedor: negociacaoData.terceiro || negociacaoData.obra_nome || "",
+      contrato_origem_id: negociacaoId,
+      contrato_origem_numero: negociacaoData.obra_nome ? `Obra: ${negociacaoData.obra_nome}` : "Negociação de Obra",
+      classificacao_operacao: "Contrato Negociado",
+      status: "em_estoque",
+      ativo: true,
+      observacoes: negociacaoData.observacoes || "",
+    };
+
+    const existentes = await base44.entities.BemRecebido.filter({ contrato_origem_id: negociacaoId });
+    if (existentes.length > 0) {
+      await base44.entities.BemRecebido.update(existentes[0].id, payload);
+    } else {
+      await base44.entities.BemRecebido.create({
+        ...payload,
+        historico: [{ acao: "Entrada via Negociação de Obra", data: new Date().toISOString(), dados: { obra: negociacaoData.obra_nome, destino: negociacaoData.destino_bem } }],
+      });
+    }
+  };
+
   const handleSave = async (data) => {
     try {
-      if (editItem) await base44.entities.NegociacaoObra.update(editItem.id, data);
-      else await base44.entities.NegociacaoObra.create(data);
+      if (editItem) {
+        await base44.entities.NegociacaoObra.update(editItem.id, data);
+        await sincronizarBemRecebido(editItem.id, data);
+      } else {
+        const negociacao = await base44.entities.NegociacaoObra.create(data);
+        await sincronizarBemRecebido(negociacao.id, data);
+      }
       setShowForm(false); setEditItem(null); load();
     } catch (error) {
       alert("Erro ao salvar: " + error.message);
+    }
+  };
+
+  const handleSincronizarTodos = async () => {
+    if (!confirm("Isso vai sincronizar todas as negociações de permuta existentes com o módulo Bens Recebidos. Continuar?")) return;
+    setSincronizando(true);
+    try {
+      let count = 0;
+      for (const neg of items) {
+        const isPermuta = neg.forma_recebimento === "Permuta/Bem" || neg.classificacao === "Permuta";
+        if (isPermuta && neg.descricao_bem) {
+          await sincronizarBemRecebido(neg.id, neg);
+          count++;
+        }
+      }
+      alert(`${count} bem(ns) sincronizado(s) com sucesso!`);
+    } catch (error) {
+      alert("Erro ao sincronizar: " + error.message);
+    } finally {
+      setSincronizando(false);
     }
   };
 
@@ -214,6 +276,9 @@ export default function ObrasNegociacao() {
         <h2 className="text-base font-semibold text-foreground">Formas de Negociação em Obras</h2>
         <div className="flex gap-2">
           <button onClick={handleExport} className="flex items-center gap-1.5 px-3 py-2 bg-muted text-muted-foreground rounded-lg text-sm hover:text-foreground"><Download size={14} /> Exportar</button>
+          <button onClick={handleSincronizarTodos} disabled={sincronizando} className="flex items-center gap-1.5 px-3 py-2 bg-blue-500/10 text-blue-400 rounded-lg text-sm font-medium hover:bg-blue-500/20 disabled:opacity-50">
+            <HandCoins size={14} /> {sincronizando ? "Sincronizando..." : "Sincronizar Bens"}
+          </button>
           <button onClick={() => { setEditItem(null); setShowForm(true); }} className="flex items-center gap-2 px-4 py-2 bg-yellow-500/10 text-white rounded-lg text-sm font-medium hover:bg-yellow-400">
             <Plus size={16} /> Novo Registro
           </button>
