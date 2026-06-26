@@ -25,7 +25,7 @@ export default function NFeListaSaida({ onNew, onEdit }) {
   const load = async () => {
     setLoading(true);
     const [ns, emps] = await Promise.all([
-      base44.entities.NotaFiscalEletronica.filter({ tipo_operacao: "Saída" }, "-data_emissao"),
+      base44.entities.NotaFiscalEletronica.filter({ tipo_operacao: { $ne: "Entrada" } }, "-data_emissao"),
       base44.entities.EmpresaCliente.list(),
     ]);
     setNotas(ns);
