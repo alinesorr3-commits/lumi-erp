@@ -1,0 +1,114 @@
+{
+  "name": "SimulacaoTributaria",
+  "type": "object",
+  "properties": {
+    "descricao": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o da Simula\u00e7\u00e3o"
+    },
+    "competencia": {
+      "type": "string",
+      "title": "Compet\u00eancia (YYYY-MM)"
+    },
+    "receita_bruta": {
+      "type": "number",
+      "title": "Receita Bruta (R$)"
+    },
+    "receita_comercio": {
+      "type": "number",
+      "title": "Receita Com\u00e9rcio (R$)",
+      "default": 0
+    },
+    "receita_servicos": {
+      "type": "number",
+      "title": "Receita Servi\u00e7os (R$)",
+      "default": 0
+    },
+    "cmv": {
+      "type": "number",
+      "title": "CMV / CPV (R$)",
+      "default": 0
+    },
+    "despesas_salarios": {
+      "type": "number",
+      "title": "Sal\u00e1rios (R$)",
+      "default": 0
+    },
+    "despesas_prolabore": {
+      "type": "number",
+      "title": "Pr\u00f3-labore (R$)",
+      "default": 0
+    },
+    "despesas_aluguel": {
+      "type": "number",
+      "title": "Aluguel (R$)",
+      "default": 0
+    },
+    "despesas_energia": {
+      "type": "number",
+      "title": "Energia (R$)",
+      "default": 0
+    },
+    "despesas_fretes": {
+      "type": "number",
+      "title": "Fretes (R$)",
+      "default": 0
+    },
+    "despesas_financeiras": {
+      "type": "number",
+      "title": "Despesas Financeiras (R$)",
+      "default": 0
+    },
+    "outras_despesas": {
+      "type": "number",
+      "title": "Outras Despesas (R$)",
+      "default": 0
+    },
+    "rbt12": {
+      "type": "number",
+      "title": "RBT12 (Receita 12 meses)"
+    },
+    "resultado_simples": {
+      "type": "object",
+      "title": "Resultado Simples Nacional"
+    },
+    "resultado_presumido": {
+      "type": "object",
+      "title": "Resultado Lucro Presumido"
+    },
+    "resultado_real": {
+      "type": "object",
+      "title": "Resultado Lucro Real"
+    },
+    "melhor_regime": {
+      "type": "string",
+      "title": "Melhor Regime"
+    },
+    "parecer_ia": {
+      "type": "string",
+      "title": "Parecer da IA"
+    },
+    "memoria_calculo": {
+      "type": "object",
+      "title": "Mem\u00f3ria de C\u00e1lculo"
+    }
+  },
+  "required": [
+    "receita_bruta",
+    "competencia"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

@@ -1,0 +1,235 @@
+{
+  "name": "EmpresaCliente",
+  "type": "object",
+  "properties": {
+    "razao_social": {
+      "type": "string",
+      "title": "Raz\u00e3o Social"
+    },
+    "nome_fantasia": {
+      "type": "string",
+      "title": "Nome Fantasia"
+    },
+    "cnpj": {
+      "type": "string",
+      "title": "CNPJ"
+    },
+    "inscricao_estadual": {
+      "type": "string",
+      "title": "Inscri\u00e7\u00e3o Estadual"
+    },
+    "inscricao_municipal": {
+      "type": "string",
+      "title": "Inscri\u00e7\u00e3o Municipal"
+    },
+    "regime_tributario": {
+      "type": "string",
+      "title": "Regime Tribut\u00e1rio",
+      "enum": [
+        "Simples Nacional",
+        "Lucro Presumido",
+        "Lucro Real",
+        "MEI"
+      ],
+      "default": "Simples Nacional"
+    },
+    "email": {
+      "type": "string",
+      "title": "E-mail"
+    },
+    "telefone": {
+      "type": "string",
+      "title": "Telefone"
+    },
+    "cep": {
+      "type": "string",
+      "title": "CEP"
+    },
+    "logradouro": {
+      "type": "string",
+      "title": "Logradouro"
+    },
+    "numero": {
+      "type": "string",
+      "title": "N\u00famero"
+    },
+    "complemento": {
+      "type": "string",
+      "title": "Complemento"
+    },
+    "bairro": {
+      "type": "string",
+      "title": "Bairro"
+    },
+    "municipio": {
+      "type": "string",
+      "title": "Munic\u00edpio"
+    },
+    "uf": {
+      "type": "string",
+      "title": "UF"
+    },
+    "codigo_municipio_ibge": {
+      "type": "string",
+      "title": "C\u00f3digo IBGE Munic\u00edpio"
+    },
+    "ambiente_nfe": {
+      "type": "string",
+      "title": "Ambiente NF-e",
+      "enum": [
+        "Homologa\u00e7\u00e3o",
+        "Produ\u00e7\u00e3o"
+      ],
+      "default": "Homologa\u00e7\u00e3o"
+    },
+    "serie_nfe": {
+      "type": "number",
+      "title": "S\u00e9rie NF-e",
+      "default": 1
+    },
+    "ultimo_numero_nfe": {
+      "type": "number",
+      "title": "\u00daltimo N\u00famero NF-e",
+      "default": 0
+    },
+    "serie_nfse": {
+      "type": "number",
+      "title": "S\u00e9rie NFS-e",
+      "default": 1
+    },
+    "ultimo_numero_nfse": {
+      "type": "number",
+      "title": "\u00daltimo N\u00famero NFS-e",
+      "default": 0
+    },
+    "serie_cte": {
+      "type": "number",
+      "title": "S\u00e9rie CT-e",
+      "default": 1
+    },
+    "ultimo_numero_cte": {
+      "type": "number",
+      "title": "\u00daltimo N\u00famero CT-e",
+      "default": 0
+    },
+    "serie_mdfe": {
+      "type": "number",
+      "title": "S\u00e9rie MDF-e",
+      "default": 1
+    },
+    "ultimo_numero_mdfe": {
+      "type": "number",
+      "title": "\u00daltimo N\u00famero MDF-e",
+      "default": 0
+    },
+    "certificado_digital_url": {
+      "type": "string",
+      "title": "Certificado Digital (A1) URL"
+    },
+    "certificado_senha": {
+      "type": "string",
+      "title": "Senha do Certificado"
+    },
+    "certificado_validade": {
+      "type": "string",
+      "format": "date",
+      "title": "Validade do Certificado"
+    },
+    "logo_url": {
+      "type": "string",
+      "title": "Logo URL"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Ativo",
+        "Inativo",
+        "Suspenso"
+      ],
+      "default": "Ativo"
+    },
+    "plano": {
+      "type": "string",
+      "title": "Plano",
+      "enum": [
+        "B\u00e1sico",
+        "Profissional",
+        "Enterprise"
+      ],
+      "default": "Profissional"
+    },
+    "modulos_ativos": {
+      "type": "array",
+      "title": "M\u00f3dulos Ativos",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "permissoes_modulos": {
+      "type": "object",
+      "title": "Permiss\u00f5es por M\u00f3dulo",
+      "description": "Chave: m\u00f3dulo, Valor: lista de permiss\u00f5es liberadas",
+      "default": {}
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "razao_social",
+    "cnpj"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

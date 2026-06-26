@@ -1,0 +1,130 @@
+{
+  "name": "Safra",
+  "type": "object",
+  "properties": {
+    "nome": {
+      "type": "string",
+      "title": "Nome da Safra"
+    },
+    "cultura": {
+      "type": "string",
+      "title": "Cultura",
+      "enum": [
+        "Soja",
+        "Milho",
+        "Algod\u00e3o",
+        "Sorgo",
+        "Feij\u00e3o",
+        "Arroz",
+        "Trigo",
+        "Cana-de-a\u00e7\u00facar",
+        "Caf\u00e9",
+        "Pastagem",
+        "Outro"
+      ]
+    },
+    "fazenda_id": {
+      "type": "string",
+      "title": "Fazenda ID"
+    },
+    "fazenda_nome": {
+      "type": "string",
+      "title": "Fazenda"
+    },
+    "talhao_id": {
+      "type": "string",
+      "title": "Talh\u00e3o ID"
+    },
+    "talhao_nome": {
+      "type": "string",
+      "title": "Talh\u00e3o"
+    },
+    "area_plantada": {
+      "type": "number",
+      "title": "\u00c1rea Plantada (ha)",
+      "default": 0
+    },
+    "ano": {
+      "type": "string",
+      "title": "Ano/Per\u00edodo"
+    },
+    "data_plantio": {
+      "type": "string",
+      "format": "date",
+      "title": "Data de Plantio"
+    },
+    "data_colheita_prev": {
+      "type": "string",
+      "format": "date",
+      "title": "Previs\u00e3o de Colheita"
+    },
+    "data_colheita_real": {
+      "type": "string",
+      "format": "date",
+      "title": "Colheita Realizada"
+    },
+    "produtividade_prev": {
+      "type": "number",
+      "title": "Produtividade Prevista (sc/ha)",
+      "default": 0
+    },
+    "produtividade_real": {
+      "type": "number",
+      "title": "Produtividade Real (sc/ha)",
+      "default": 0
+    },
+    "preco_venda": {
+      "type": "number",
+      "title": "Pre\u00e7o de Venda (R$/sc)",
+      "default": 0
+    },
+    "producao_total": {
+      "type": "number",
+      "title": "Produ\u00e7\u00e3o Total (sc)",
+      "default": 0
+    },
+    "receita_bruta": {
+      "type": "number",
+      "title": "Receita Bruta (R$)",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Planejamento",
+        "Plantio",
+        "Desenvolvimento",
+        "Colheita",
+        "Conclu\u00edda",
+        "Cancelada"
+      ],
+      "default": "Planejamento"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "nome",
+    "cultura",
+    "fazenda_id",
+    "area_plantada",
+    "ano"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

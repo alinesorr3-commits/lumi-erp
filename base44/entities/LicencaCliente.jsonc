@@ -1,0 +1,120 @@
+{
+  "name": "LicencaCliente",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string",
+      "title": "E-mail do Usu\u00e1rio"
+    },
+    "user_id": {
+      "type": "string",
+      "title": "User ID"
+    },
+    "empresa_nome": {
+      "type": "string",
+      "title": "Empresa"
+    },
+    "plano": {
+      "type": "string",
+      "title": "Plano",
+      "enum": [
+        "B\u00e1sico",
+        "Profissional",
+        "Enterprise"
+      ],
+      "default": "Profissional"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "ativa",
+        "suspensa",
+        "bloqueada",
+        "cancelada"
+      ],
+      "default": "ativa"
+    },
+    "chave_licenca": {
+      "type": "string",
+      "title": "Chave de Licen\u00e7a"
+    },
+    "data_ativacao": {
+      "type": "string",
+      "format": "date",
+      "title": "Data de Ativa\u00e7\u00e3o"
+    },
+    "data_expiracao": {
+      "type": "string",
+      "format": "date",
+      "title": "Data de Expira\u00e7\u00e3o"
+    },
+    "termos_aceitos": {
+      "type": "boolean",
+      "title": "Termos Aceitos",
+      "default": false
+    },
+    "termos_aceitos_em": {
+      "type": "string",
+      "title": "Termos Aceitos Em"
+    },
+    "termos_aceitos_ip": {
+      "type": "string",
+      "title": "IP no Aceite"
+    },
+    "motivo_bloqueio": {
+      "type": "string",
+      "title": "Motivo do Bloqueio"
+    },
+    "bloqueado_por": {
+      "type": "string",
+      "title": "Bloqueado Por"
+    },
+    "ultimo_acesso": {
+      "type": "string",
+      "title": "\u00daltimo Acesso"
+    },
+    "total_acessos": {
+      "type": "number",
+      "title": "Total de Acessos",
+      "default": 0
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "user_email",
+    "plano"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_id": "{{user.id}}"
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

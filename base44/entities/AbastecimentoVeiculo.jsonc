@@ -1,0 +1,91 @@
+{
+  "name": "AbastecimentoVeiculo",
+  "type": "object",
+  "properties": {
+    "veiculo_id": {
+      "type": "string",
+      "title": "Ve\u00edculo ID"
+    },
+    "veiculo_placa": {
+      "type": "string",
+      "title": "Placa"
+    },
+    "data": {
+      "type": "string",
+      "format": "date",
+      "title": "Data"
+    },
+    "hodometro": {
+      "type": "number",
+      "title": "Hod\u00f4metro (km)"
+    },
+    "litros": {
+      "type": "number",
+      "title": "Litros"
+    },
+    "preco_litro": {
+      "type": "number",
+      "title": "Pre\u00e7o/Litro (R$)"
+    },
+    "valor_total": {
+      "type": "number",
+      "title": "Total (R$)"
+    },
+    "combustivel": {
+      "type": "string",
+      "title": "Combust\u00edvel",
+      "enum": [
+        "Gasolina",
+        "Etanol",
+        "Diesel",
+        "GNV",
+        "Arla 32",
+        "Outro"
+      ]
+    },
+    "posto": {
+      "type": "string",
+      "title": "Posto / Fornecedor"
+    },
+    "km_litro": {
+      "type": "number",
+      "title": "Km/L calculado"
+    },
+    "nfe_id": {
+      "type": "string",
+      "title": "NF-e vinculada"
+    },
+    "nfe_numero": {
+      "type": "string",
+      "title": "N\u00famero NF"
+    },
+    "motorista": {
+      "type": "string",
+      "title": "Motorista"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "veiculo_id",
+    "data",
+    "litros",
+    "valor_total"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

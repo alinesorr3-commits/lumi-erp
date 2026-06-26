@@ -1,0 +1,66 @@
+{
+  "name": "DespesaObra",
+  "type": "object",
+  "properties": {
+    "obra_id": {
+      "type": "string",
+      "title": "Obra ID"
+    },
+    "obra_nome": {
+      "type": "string",
+      "title": "Obra"
+    },
+    "tipo": {
+      "type": "string",
+      "title": "Tipo de Despesa",
+      "enum": [
+        "Aluguel de Equipamento",
+        "Transporte",
+        "Alimenta\u00e7\u00e3o",
+        "Hospedagem",
+        "Taxas/Licen\u00e7as",
+        "Projeto/Consultoria",
+        "Comunica\u00e7\u00e3o",
+        "Outros"
+      ]
+    },
+    "data": {
+      "type": "string",
+      "format": "date",
+      "title": "Data"
+    },
+    "valor": {
+      "type": "number",
+      "title": "Valor (R$)",
+      "default": 0
+    },
+    "responsavel": {
+      "type": "string",
+      "title": "Respons\u00e1vel"
+    },
+    "descricao": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o"
+    }
+  },
+  "required": [
+    "obra_id",
+    "tipo",
+    "valor",
+    "data"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "name": "DespesaAgricola",
+  "type": "object",
+  "properties": {
+    "safra_id": {
+      "type": "string",
+      "title": "Safra ID"
+    },
+    "safra_nome": {
+      "type": "string",
+      "title": "Safra"
+    },
+    "fazenda_id": {
+      "type": "string",
+      "title": "Fazenda ID"
+    },
+    "fazenda_nome": {
+      "type": "string",
+      "title": "Fazenda"
+    },
+    "categoria": {
+      "type": "string",
+      "title": "Categoria",
+      "enum": [
+        "Sementes",
+        "Fertilizantes",
+        "Defensivos",
+        "Combust\u00edvel",
+        "M\u00e3o de Obra",
+        "M\u00e1quinas/Equipamentos",
+        "Arrendamento",
+        "Transporte",
+        "Secagem/Armazenagem",
+        "Assist\u00eancia T\u00e9cnica",
+        "Seguro",
+        "Irriga\u00e7\u00e3o",
+        "Outros"
+      ]
+    },
+    "descricao": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o"
+    },
+    "data": {
+      "type": "string",
+      "format": "date",
+      "title": "Data"
+    },
+    "fornecedor": {
+      "type": "string",
+      "title": "Fornecedor"
+    },
+    "quantidade": {
+      "type": "number",
+      "title": "Quantidade",
+      "default": 1
+    },
+    "unidade": {
+      "type": "string",
+      "title": "Unidade"
+    },
+    "valor_unitario": {
+      "type": "number",
+      "title": "Valor Unit\u00e1rio (R$)",
+      "default": 0
+    },
+    "valor_total": {
+      "type": "number",
+      "title": "Total (R$)",
+      "default": 0
+    },
+    "pago": {
+      "type": "boolean",
+      "title": "Pago",
+      "default": false
+    },
+    "numero_nf": {
+      "type": "string",
+      "title": "N\u00ba NF"
+    }
+  },
+  "required": [
+    "safra_id",
+    "categoria",
+    "descricao",
+    "data",
+    "valor_total"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

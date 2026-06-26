@@ -1,0 +1,79 @@
+{
+  "name": "MaoDeObraObra",
+  "type": "object",
+  "properties": {
+    "obra_id": {
+      "type": "string",
+      "title": "Obra ID"
+    },
+    "obra_nome": {
+      "type": "string",
+      "title": "Obra"
+    },
+    "funcionario": {
+      "type": "string",
+      "title": "Funcion\u00e1rio / Nome"
+    },
+    "funcao": {
+      "type": "string",
+      "title": "Fun\u00e7\u00e3o",
+      "enum": [
+        "Pedreiro",
+        "Eletricista",
+        "Encanador",
+        "Carpinteiro",
+        "Pintor",
+        "Servente",
+        "Mestre de Obras",
+        "Engenheiro",
+        "Arquiteto",
+        "Terceirizado",
+        "Outro"
+      ]
+    },
+    "data": {
+      "type": "string",
+      "format": "date",
+      "title": "Data"
+    },
+    "horas_trabalhadas": {
+      "type": "number",
+      "title": "Horas Trabalhadas",
+      "default": 0
+    },
+    "valor_hora": {
+      "type": "number",
+      "title": "Valor por Hora (R$)",
+      "default": 0
+    },
+    "valor_total": {
+      "type": "number",
+      "title": "Total (R$)",
+      "default": 0
+    },
+    "terceirizado": {
+      "type": "boolean",
+      "title": "Terceirizado",
+      "default": false
+    }
+  },
+  "required": [
+    "obra_id",
+    "funcao",
+    "data"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

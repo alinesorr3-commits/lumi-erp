@@ -1,0 +1,144 @@
+{
+  "name": "MovimentacaoEstoque",
+  "type": "object",
+  "properties": {
+    "produto_id": {
+      "type": "string",
+      "title": "Produto ID"
+    },
+    "produto_codigo": {
+      "type": "string",
+      "title": "C\u00f3digo do Produto"
+    },
+    "produto_descricao": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o do Produto"
+    },
+    "tipo_movimento": {
+      "type": "string",
+      "title": "Tipo de Movimento",
+      "enum": [
+        "Entrada",
+        "Sa\u00edda",
+        "Ajuste",
+        "Devolu\u00e7\u00e3o",
+        "Produ\u00e7\u00e3o",
+        "Consumo Produ\u00e7\u00e3o"
+      ],
+      "default": "Entrada"
+    },
+    "quantidade": {
+      "type": "number",
+      "title": "Quantidade"
+    },
+    "preco_unitario": {
+      "type": "number",
+      "title": "Pre\u00e7o Unit\u00e1rio"
+    },
+    "valor_total": {
+      "type": "number",
+      "title": "Valor Total"
+    },
+    "custo_medio_anterior": {
+      "type": "number",
+      "title": "Custo M\u00e9dio Anterior"
+    },
+    "custo_medio_novo": {
+      "type": "number",
+      "title": "Custo M\u00e9dio Novo"
+    },
+    "saldo_anterior": {
+      "type": "number",
+      "title": "Saldo Anterior (Qtd)"
+    },
+    "saldo_novo": {
+      "type": "number",
+      "title": "Saldo Novo (Qtd)"
+    },
+    "data_movimento": {
+      "type": "string",
+      "format": "date",
+      "title": "Data do Movimento"
+    },
+    "ordem_producao_id": {
+      "type": "string",
+      "title": "Ordem de Produ\u00e7\u00e3o ID"
+    },
+    "lote_producao": {
+      "type": "string",
+      "title": "Lote de Produ\u00e7\u00e3o"
+    },
+    "nota_fiscal_id": {
+      "type": "string",
+      "title": "Nota Fiscal ID"
+    },
+    "referencia_documento": {
+      "type": "string",
+      "title": "Refer\u00eancia (N\u00famero NF, OP, etc)"
+    },
+    "motivo_ajuste": {
+      "type": "string",
+      "title": "Motivo Ajuste"
+    },
+    "responsavel": {
+      "type": "string",
+      "title": "Respons\u00e1vel"
+    }
+  },
+  "required": [
+    "produto_id",
+    "tipo_movimento",
+    "quantidade",
+    "data_movimento"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

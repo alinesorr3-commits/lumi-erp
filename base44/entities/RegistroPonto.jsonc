@@ -1,0 +1,99 @@
+{
+  "name": "RegistroPonto",
+  "type": "object",
+  "properties": {
+    "colaborador_id": {
+      "type": "string",
+      "title": "Colaborador ID"
+    },
+    "colaborador_nome": {
+      "type": "string",
+      "title": "Colaborador"
+    },
+    "data": {
+      "type": "string",
+      "format": "date",
+      "title": "Data"
+    },
+    "entrada": {
+      "type": "string",
+      "title": "Entrada"
+    },
+    "saida_almoco": {
+      "type": "string",
+      "title": "Sa\u00edda Almo\u00e7o"
+    },
+    "retorno_almoco": {
+      "type": "string",
+      "title": "Retorno Almo\u00e7o"
+    },
+    "saida": {
+      "type": "string",
+      "title": "Sa\u00edda"
+    },
+    "horas_trabalhadas": {
+      "type": "number",
+      "title": "Horas Trabalhadas"
+    },
+    "horas_extras": {
+      "type": "number",
+      "title": "Horas Extras",
+      "default": 0
+    },
+    "ocorrencia": {
+      "type": "string",
+      "enum": [
+        "normal",
+        "falta",
+        "falta_justificada",
+        "ferias",
+        "feriado",
+        "afastamento"
+      ],
+      "title": "Ocorr\u00eancia",
+      "default": "normal"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "colaborador_id",
+    "data"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

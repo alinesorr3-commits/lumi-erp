@@ -1,0 +1,78 @@
+{
+  "name": "MaterialObra",
+  "type": "object",
+  "properties": {
+    "obra_id": {
+      "type": "string",
+      "title": "Obra ID"
+    },
+    "obra_nome": {
+      "type": "string",
+      "title": "Obra"
+    },
+    "data": {
+      "type": "string",
+      "format": "date",
+      "title": "Data"
+    },
+    "fornecedor": {
+      "type": "string",
+      "title": "Fornecedor"
+    },
+    "produto": {
+      "type": "string",
+      "title": "Produto"
+    },
+    "quantidade": {
+      "type": "number",
+      "title": "Quantidade",
+      "default": 1
+    },
+    "valor_unitario": {
+      "type": "number",
+      "title": "Valor Unit\u00e1rio (R$)",
+      "default": 0
+    },
+    "valor_total": {
+      "type": "number",
+      "title": "Total (R$)",
+      "default": 0
+    },
+    "numero_nf": {
+      "type": "string",
+      "title": "N\u00ba Nota Fiscal"
+    },
+    "categoria": {
+      "type": "string",
+      "title": "Categoria",
+      "enum": [
+        "Estrutura",
+        "El\u00e9trica",
+        "Hidr\u00e1ulica",
+        "Acabamento",
+        "Ferramentas",
+        "EPI",
+        "Outros"
+      ]
+    }
+  },
+  "required": [
+    "obra_id",
+    "produto",
+    "valor_total"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

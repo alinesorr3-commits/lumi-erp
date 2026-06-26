@@ -1,0 +1,151 @@
+{
+  "name": "Tarefa",
+  "type": "object",
+  "properties": {
+    "titulo": {
+      "type": "string",
+      "title": "T\u00edtulo"
+    },
+    "descricao": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o"
+    },
+    "data_vencimento": {
+      "type": "string",
+      "format": "date",
+      "title": "Data de Vencimento"
+    },
+    "hora_vencimento": {
+      "type": "string",
+      "title": "Hora"
+    },
+    "prioridade": {
+      "type": "string",
+      "title": "Prioridade",
+      "enum": [
+        "Baixa",
+        "M\u00e9dia",
+        "Alta",
+        "Urgente"
+      ],
+      "default": "M\u00e9dia"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "pendente",
+        "em_andamento",
+        "concluida",
+        "cancelada"
+      ],
+      "default": "pendente"
+    },
+    "tipo": {
+      "type": "string",
+      "title": "Tipo",
+      "enum": [
+        "Geral",
+        "Financeiro",
+        "Fiscal",
+        "Contrato",
+        "Certid\u00e3o",
+        "Imposto",
+        "Reuni\u00e3o",
+        "Outro"
+      ],
+      "default": "Geral"
+    },
+    "departamento": {
+      "type": "string",
+      "title": "Departamento"
+    },
+    "responsavel": {
+      "type": "string",
+      "title": "Respons\u00e1vel"
+    },
+    "empresa": {
+      "type": "string",
+      "title": "Empresa"
+    },
+    "whatsapp_contato": {
+      "type": "string",
+      "title": "Contato WhatsApp"
+    },
+    "avisar_modulo": {
+      "type": "boolean",
+      "title": "Avisar respons\u00e1vel do m\u00f3dulo",
+      "default": false
+    },
+    "recorrente": {
+      "type": "boolean",
+      "title": "Tarefa Recorrente",
+      "default": false
+    },
+    "frequencia_recorrencia": {
+      "type": "string",
+      "title": "Frequ\u00eancia",
+      "enum": [
+        "di\u00e1ria",
+        "semanal",
+        "quinzenal",
+        "mensal",
+        "anual"
+      ]
+    },
+    "lembrete_dias": {
+      "type": "number",
+      "title": "Alertar (dias antes)",
+      "default": 3
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "titulo",
+    "data_vencimento"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

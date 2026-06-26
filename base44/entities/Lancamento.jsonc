@@ -1,0 +1,125 @@
+{
+  "name": "Lancamento",
+  "type": "object",
+  "properties": {
+    "descricao": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o"
+    },
+    "tipo": {
+      "type": "string",
+      "enum": [
+        "receita",
+        "despesa"
+      ],
+      "title": "Tipo"
+    },
+    "valor": {
+      "type": "number",
+      "title": "Valor"
+    },
+    "juros_multas": {
+      "type": "number",
+      "title": "Juros e Multas",
+      "default": 0
+    },
+    "valor_pago": {
+      "type": "number",
+      "title": "Valor Pago"
+    },
+    "valor_por_fora": {
+      "type": "number",
+      "title": "Valor Adicionado por Fora (Extra)",
+      "default": 0
+    },
+    "valor_desconto": {
+      "type": "number",
+      "title": "Desconto (R$)",
+      "default": 0
+    },
+    "vencimento": {
+      "type": "string",
+      "format": "date",
+      "title": "Vencimento"
+    },
+    "data_pagamento": {
+      "type": "string",
+      "format": "date",
+      "title": "Data de Pagamento"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pendente",
+        "pago",
+        "vencido",
+        "cancelado"
+      ],
+      "title": "Status",
+      "default": "pendente"
+    },
+    "categoria": {
+      "type": "string",
+      "title": "Categoria"
+    },
+    "conta_bancaria_id": {
+      "type": "string",
+      "title": "Conta Banc\u00e1ria"
+    },
+    "dados_cheque": {
+      "type": "string",
+      "title": "Dados do Cheque"
+    },
+    "cliente_fornecedor": {
+      "type": "string",
+      "title": "Cliente/Fornecedor"
+    },
+    "tipo_documento": {
+      "type": "string",
+      "title": "Tipo de Documento",
+      "enum": [
+        "Recibo",
+        "NF-e",
+        "NFS-e",
+        "Pedido",
+        "Boleto",
+        "Contrato",
+        "Outro"
+      ],
+      "default": "Outro"
+    },
+    "numero_documento": {
+      "type": "string",
+      "title": "N\u00famero do Documento"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    },
+    "conciliado": {
+      "type": "boolean",
+      "title": "Conciliado",
+      "default": false
+    }
+  },
+  "required": [
+    "descricao",
+    "tipo",
+    "valor",
+    "vencimento"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

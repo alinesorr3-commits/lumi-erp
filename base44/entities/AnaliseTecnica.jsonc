@@ -1,0 +1,188 @@
+{
+  "name": "AnaliseTecnica",
+  "type": "object",
+  "properties": {
+    "titulo": {
+      "type": "string",
+      "title": "T\u00edtulo da An\u00e1lise"
+    },
+    "data_analise": {
+      "type": "string",
+      "format": "date",
+      "title": "Data da An\u00e1lise"
+    },
+    "periodo": {
+      "type": "string",
+      "title": "Per\u00edodo de An\u00e1lise"
+    },
+    "balancete_pdf": {
+      "type": "string",
+      "title": "Balancete (PDF)"
+    },
+    "lancamentos_manuais": {
+      "type": "array",
+      "title": "Lan\u00e7amentos Manuais",
+      "items": {
+        "type": "object",
+        "properties": {
+          "conta": {
+            "type": "string"
+          },
+          "descricao": {
+            "type": "string"
+          },
+          "valor_dn": {
+            "type": "number"
+          },
+          "valor_cr": {
+            "type": "number"
+          }
+        }
+      },
+      "default": []
+    },
+    "lucro_acumulado": {
+      "type": "number",
+      "title": "Lucro Acumulado",
+      "default": 0
+    },
+    "saldo_acumulado": {
+      "type": "number",
+      "title": "Saldo Acumulado",
+      "default": 0
+    },
+    "caixa_imobilizado": {
+      "type": "number",
+      "title": "Caixa/Imobilizado",
+      "default": 0
+    },
+    "passivo_circulante": {
+      "type": "number",
+      "title": "Passivo Circulante",
+      "default": 0
+    },
+    "passivo_nao_circulante": {
+      "type": "number",
+      "title": "Passivo N\u00e3o Circulante",
+      "default": 0
+    },
+    "capital_social": {
+      "type": "number",
+      "title": "Capital Social",
+      "default": 0
+    },
+    "imposto_diferido": {
+      "type": "number",
+      "title": "Imposto Diferido",
+      "default": 0
+    },
+    "situacao_apurada": {
+      "type": "string",
+      "title": "Situa\u00e7\u00e3o Apurada"
+    },
+    "calculo_imposto": {
+      "type": "object",
+      "title": "C\u00e1lculo de Impostos",
+      "properties": {
+        "rcpc": {
+          "type": "number"
+        },
+        "pis": {
+          "type": "number"
+        },
+        "cofins": {
+          "type": "number"
+        },
+        "irpj": {
+          "type": "number"
+        },
+        "csll": {
+          "type": "number"
+        }
+      }
+    },
+    "parecer_ia": {
+      "type": "object",
+      "title": "Parecer T\u00e9cnico IA",
+      "properties": {
+        "analise": {
+          "type": "string"
+        },
+        "recomendacoes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "alertas": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "timestamp": {
+          "type": "string"
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "rascunho",
+        "analise_completa",
+        "relatorio_gerado"
+      ],
+      "title": "Status",
+      "default": "rascunho"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "titulo",
+    "data_analise"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

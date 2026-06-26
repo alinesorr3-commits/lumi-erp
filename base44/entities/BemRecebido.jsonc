@@ -1,0 +1,127 @@
+{
+  "name": "BemRecebido",
+  "type": "object",
+  "properties": {
+    "descricao": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o do Bem"
+    },
+    "categoria": {
+      "type": "string",
+      "title": "Categoria",
+      "enum": [
+        "imovel",
+        "veiculo",
+        "maquina",
+        "equipamento",
+        "mercadoria",
+        "outro"
+      ]
+    },
+    "quantidade": {
+      "type": "number",
+      "title": "Quantidade",
+      "default": 1
+    },
+    "valor_avaliacao": {
+      "type": "number",
+      "title": "Valor de Avalia\u00e7\u00e3o (R$)"
+    },
+    "data_entrada": {
+      "type": "string",
+      "format": "date",
+      "title": "Data de Entrada"
+    },
+    "cliente_fornecedor": {
+      "type": "string",
+      "title": "Cliente/Fornecedor de Origem"
+    },
+    "contrato_origem_id": {
+      "type": "string",
+      "title": "ID Contrato de Origem"
+    },
+    "contrato_origem_numero": {
+      "type": "string",
+      "title": "Contrato de Origem"
+    },
+    "classificacao_operacao": {
+      "type": "string",
+      "title": "Classifica\u00e7\u00e3o da Opera\u00e7\u00e3o",
+      "enum": [
+        "Integra\u00e7\u00e3o de Capital",
+        "Recebimento de Venda",
+        "Contrato Negociado",
+        "Permuta",
+        "Retirada de S\u00f3cio",
+        "Outros"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "em_estoque",
+        "vendido",
+        "transferido",
+        "cancelado"
+      ],
+      "default": "em_estoque"
+    },
+    "data_venda": {
+      "type": "string",
+      "format": "date",
+      "title": "Data da Venda/Transfer\u00eancia"
+    },
+    "valor_venda": {
+      "type": "number",
+      "title": "Valor de Venda (R$)"
+    },
+    "comprador": {
+      "type": "string",
+      "title": "Comprador/Destinat\u00e1rio"
+    },
+    "margem": {
+      "type": "number",
+      "title": "Margem (%)"
+    },
+    "lucro_prejuizo": {
+      "type": "number",
+      "title": "Lucro / Preju\u00edzo (R$)"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    },
+    "historico": {
+      "type": "array",
+      "title": "Hist\u00f3rico de Auditoria",
+      "items": {
+        "type": "object"
+      }
+    },
+    "ativo": {
+      "type": "boolean",
+      "title": "Ativo (exclus\u00e3o l\u00f3gica)",
+      "default": true
+    }
+  },
+  "required": [
+    "descricao",
+    "valor_avaliacao",
+    "data_entrada"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

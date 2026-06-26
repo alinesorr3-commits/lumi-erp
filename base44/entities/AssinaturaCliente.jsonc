@@ -1,0 +1,126 @@
+{
+  "name": "AssinaturaCliente",
+  "type": "object",
+  "properties": {
+    "empresa_cliente_id": {
+      "type": "string",
+      "title": "Empresa Cliente ID"
+    },
+    "user_id": {
+      "type": "string",
+      "title": "User ID (propriet\u00e1rio)"
+    },
+    "user_email": {
+      "type": "string",
+      "title": "E-mail do usu\u00e1rio"
+    },
+    "plano": {
+      "type": "string",
+      "title": "Plano",
+      "enum": [
+        "B\u00e1sico",
+        "Profissional",
+        "Enterprise"
+      ],
+      "default": "Profissional"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Ativa",
+        "Suspensa",
+        "Cancelada",
+        "Trial"
+      ],
+      "default": "Ativa"
+    },
+    "modulos_contratados": {
+      "type": "array",
+      "title": "M\u00f3dulos Contratados",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "data_inicio": {
+      "type": "string",
+      "format": "date",
+      "title": "Data de In\u00edcio"
+    },
+    "data_renovacao": {
+      "type": "string",
+      "format": "date",
+      "title": "Pr\u00f3xima Renova\u00e7\u00e3o"
+    },
+    "stripe_subscription_id": {
+      "type": "string",
+      "title": "Stripe Subscription ID"
+    },
+    "stripe_customer_id": {
+      "type": "string",
+      "title": "Stripe Customer ID"
+    },
+    "valor_mensal": {
+      "type": "number",
+      "title": "Valor Mensal (R$)",
+      "default": 0
+    },
+    "empresa_nome": {
+      "type": "string",
+      "title": "Nome da Empresa"
+    },
+    "empresa_cnpj": {
+      "type": "string",
+      "title": "CNPJ"
+    },
+    "responsavel_nome": {
+      "type": "string",
+      "title": "Respons\u00e1vel"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "plano",
+    "status"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.user_email": "{{user.email}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

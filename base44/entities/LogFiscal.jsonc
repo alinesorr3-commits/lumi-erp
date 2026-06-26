@@ -1,0 +1,90 @@
+{
+  "name": "LogFiscal",
+  "type": "object",
+  "properties": {
+    "empresa_id": {
+      "type": "string",
+      "title": "Empresa ID"
+    },
+    "nota_id": {
+      "type": "string",
+      "title": "Nota ID"
+    },
+    "tipo_doc": {
+      "type": "string",
+      "title": "Tipo Doc"
+    },
+    "numero": {
+      "type": "string",
+      "title": "N\u00famero"
+    },
+    "acao": {
+      "type": "string",
+      "title": "A\u00e7\u00e3o",
+      "enum": [
+        "Emiss\u00e3o",
+        "Transmiss\u00e3o",
+        "Autoriza\u00e7\u00e3o",
+        "Rejei\u00e7\u00e3o",
+        "Cancelamento",
+        "Inutiliza\u00e7\u00e3o",
+        "Consulta",
+        "Download XML",
+        "Download DANFE"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Sucesso",
+        "Erro",
+        "Pendente"
+      ],
+      "default": "Pendente"
+    },
+    "codigo_retorno": {
+      "type": "string",
+      "title": "C\u00f3digo Retorno SEFAZ"
+    },
+    "mensagem": {
+      "type": "string",
+      "title": "Mensagem"
+    },
+    "ambiente": {
+      "type": "string",
+      "title": "Ambiente"
+    }
+  },
+  "required": [
+    "empresa_id",
+    "acao"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

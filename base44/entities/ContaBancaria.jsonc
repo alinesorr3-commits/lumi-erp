@@ -1,0 +1,60 @@
+{
+  "name": "ContaBancaria",
+  "type": "object",
+  "properties": {
+    "nome": {
+      "type": "string",
+      "title": "Nome da Conta"
+    },
+    "banco": {
+      "type": "string",
+      "title": "Banco"
+    },
+    "agencia": {
+      "type": "string",
+      "title": "Ag\u00eancia"
+    },
+    "conta": {
+      "type": "string",
+      "title": "N\u00famero da Conta"
+    },
+    "tipo": {
+      "type": "string",
+      "enum": [
+        "corrente",
+        "poupanca",
+        "investimento",
+        "caixa"
+      ],
+      "title": "Tipo"
+    },
+    "saldo_inicial": {
+      "type": "number",
+      "title": "Saldo Inicial",
+      "default": 0
+    },
+    "ativa": {
+      "type": "boolean",
+      "title": "Ativa",
+      "default": true
+    }
+  },
+  "required": [
+    "nome",
+    "banco"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "name": "DividaFiscal",
+  "type": "object",
+  "properties": {
+    "descricao": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o"
+    },
+    "tipo": {
+      "type": "string",
+      "title": "Tipo",
+      "enum": [
+        "Empr\u00e9stimo",
+        "Parcelamento",
+        "Outros"
+      ],
+      "default": "Parcelamento"
+    },
+    "credor": {
+      "type": "string",
+      "title": "Credor"
+    },
+    "tributo": {
+      "type": "string",
+      "title": "Tributo",
+      "enum": [
+        "SIMPLES NACIONAL",
+        "IRPJ",
+        "CSLL",
+        "PIS",
+        "COFINS",
+        "ICMS",
+        "ISS",
+        "IPI",
+        "INSS",
+        "FGTS",
+        "Outros"
+      ]
+    },
+    "numero_parcelamento": {
+      "type": "string",
+      "title": "N\u00ba Parcelamento/Contrato"
+    },
+    "valor_original": {
+      "type": "number",
+      "title": "Valor Original / Total (R$)"
+    },
+    "valor_entrada": {
+      "type": "number",
+      "title": "Valor de Entrada (R$)",
+      "default": 0
+    },
+    "parcelas_entrada": {
+      "type": "number",
+      "title": "Parcelas da Entrada",
+      "default": 1
+    },
+    "valor_restante": {
+      "type": "number",
+      "title": "Valor Restante (R$)"
+    },
+    "valor_atual": {
+      "type": "number",
+      "title": "Saldo Atual (R$)"
+    },
+    "total_parcelas": {
+      "type": "number",
+      "title": "Total de Parcelas"
+    },
+    "parcelas_restantes": {
+      "type": "number",
+      "title": "Parcelas Restantes"
+    },
+    "parcelas_pagas": {
+      "type": "number",
+      "title": "Parcelas Pagas",
+      "default": 0
+    },
+    "valor_parcela": {
+      "type": "number",
+      "title": "Valor da Parcela (R$)"
+    },
+    "juros": {
+      "type": "number",
+      "title": "Juros (% a.m.)",
+      "default": 0
+    },
+    "data_inicio": {
+      "type": "string",
+      "format": "date",
+      "title": "Data de In\u00edcio"
+    },
+    "vencimento_final": {
+      "type": "string",
+      "format": "date",
+      "title": "Vencimento Final"
+    },
+    "dia_vencimento": {
+      "type": "number",
+      "title": "Dia do Vencimento",
+      "default": 20
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Ativo",
+        "Quitado",
+        "Inadimplente",
+        "Suspenso"
+      ],
+      "default": "Ativo"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "descricao"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

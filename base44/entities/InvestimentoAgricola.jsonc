@@ -1,0 +1,86 @@
+{
+  "name": "InvestimentoAgricola",
+  "type": "object",
+  "properties": {
+    "fazenda_id": {
+      "type": "string",
+      "title": "Fazenda ID"
+    },
+    "fazenda_nome": {
+      "type": "string",
+      "title": "Fazenda"
+    },
+    "tipo": {
+      "type": "string",
+      "title": "Tipo",
+      "enum": [
+        "M\u00e1quinas/Tratores",
+        "Implementos",
+        "Irriga\u00e7\u00e3o",
+        "Armaz\u00e9m/Silo",
+        "Benfeitorias",
+        "Terra/Expans\u00e3o",
+        "Tecnologia/Software",
+        "Outros"
+      ]
+    },
+    "descricao": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o"
+    },
+    "fornecedor": {
+      "type": "string",
+      "title": "Fornecedor"
+    },
+    "valor": {
+      "type": "number",
+      "title": "Valor (R$)",
+      "default": 0
+    },
+    "data": {
+      "type": "string",
+      "format": "date",
+      "title": "Data"
+    },
+    "vida_util_anos": {
+      "type": "number",
+      "title": "Vida \u00datil (anos)",
+      "default": 10
+    },
+    "depreciacao_anual": {
+      "type": "number",
+      "title": "Deprecia\u00e7\u00e3o Anual (R$)",
+      "default": 0
+    },
+    "financiado": {
+      "type": "boolean",
+      "title": "Financiado",
+      "default": false
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "fazenda_id",
+    "tipo",
+    "descricao",
+    "valor",
+    "data"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

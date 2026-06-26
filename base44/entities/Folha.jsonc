@@ -1,0 +1,170 @@
+{
+  "name": "Folha",
+  "type": "object",
+  "properties": {
+    "colaborador_id": {
+      "type": "string",
+      "title": "Colaborador ID"
+    },
+    "colaborador_nome": {
+      "type": "string",
+      "title": "Colaborador"
+    },
+    "mes_referencia": {
+      "type": "string",
+      "title": "M\u00eas de Refer\u00eancia"
+    },
+    "salario_base": {
+      "type": "number",
+      "title": "Sal\u00e1rio Base"
+    },
+    "horas_extras_valor": {
+      "type": "number",
+      "title": "Horas Extras (R$)",
+      "default": 0
+    },
+    "adicional_noturno": {
+      "type": "number",
+      "title": "Adicional Noturno",
+      "default": 0
+    },
+    "ferias_valor": {
+      "type": "number",
+      "title": "F\u00e9rias (R$)",
+      "default": 0
+    },
+    "rescisao_valor": {
+      "type": "number",
+      "title": "Rescis\u00e3o (R$)",
+      "default": 0
+    },
+    "outros_adicionais": {
+      "type": "number",
+      "title": "Outros Adicionais",
+      "default": 0
+    },
+    "inss": {
+      "type": "number",
+      "title": "INSS",
+      "default": 0
+    },
+    "irrf": {
+      "type": "number",
+      "title": "IRRF",
+      "default": 0
+    },
+    "vale_transporte": {
+      "type": "number",
+      "title": "Vale Transporte (desconto)",
+      "default": 0
+    },
+    "outros_descontos": {
+      "type": "number",
+      "title": "Outros Descontos",
+      "default": 0
+    },
+    "adiantamento": {
+      "type": "number",
+      "title": "Adiantamento",
+      "default": 0
+    },
+    "emprestimo_empresa": {
+      "type": "number",
+      "title": "Empr\u00e9stimo Empresa",
+      "default": 0
+    },
+    "emprestimo_governo": {
+      "type": "number",
+      "title": "Empr\u00e9stimo Governo",
+      "default": 0
+    },
+    "fgts": {
+      "type": "number",
+      "title": "FGTS",
+      "default": 0
+    },
+    "inss_patronal": {
+      "type": "number",
+      "title": "INSS Patronal",
+      "default": 0
+    },
+    "salario_liquido": {
+      "type": "number",
+      "title": "Sal\u00e1rio L\u00edquido"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "rascunho",
+        "aprovada",
+        "paga"
+      ],
+      "title": "Status",
+      "default": "rascunho"
+    },
+    "data_pagamento": {
+      "type": "string",
+      "format": "date",
+      "title": "Data de Pagamento"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "colaborador_id",
+    "mes_referencia",
+    "salario_base"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

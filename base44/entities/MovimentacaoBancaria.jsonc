@@ -1,0 +1,150 @@
+{
+  "name": "MovimentacaoBancaria",
+  "type": "object",
+  "properties": {
+    "conta_bancaria_id": {
+      "type": "string",
+      "title": "Conta Banc\u00e1ria"
+    },
+    "conta_bancaria_nome": {
+      "type": "string",
+      "title": "Nome da Conta"
+    },
+    "arquivo_apuracao_id": {
+      "type": "string",
+      "title": "Arquivo de Apura\u00e7\u00e3o"
+    },
+    "data_transacao": {
+      "type": "string",
+      "format": "date",
+      "title": "Data da Transa\u00e7\u00e3o"
+    },
+    "tipo": {
+      "type": "string",
+      "title": "Tipo",
+      "enum": [
+        "receita",
+        "despesa"
+      ],
+      "default": "receita"
+    },
+    "descricao": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o"
+    },
+    "valor": {
+      "type": "number",
+      "title": "Valor",
+      "default": 0
+    },
+    "cnpj_cpf": {
+      "type": "string",
+      "title": "CNPJ/CPF"
+    },
+    "numero_documento": {
+      "type": "string",
+      "title": "N\u00famero do Documento"
+    },
+    "lancamento_id": {
+      "type": "string",
+      "title": "Lan\u00e7amento Vinculado (Antigo)"
+    },
+    "lancamento_descricao": {
+      "type": "string",
+      "title": "Desc. do Lan\u00e7amento"
+    },
+    "vinculado": {
+      "type": "boolean",
+      "title": "Vinculado a Lan\u00e7amento",
+      "default": false
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    },
+    "tipo_conciliacao": {
+      "type": "string",
+      "title": "Tipo de Concilia\u00e7\u00e3o",
+      "enum": [
+        "automatica",
+        "assistida",
+        "manual"
+      ]
+    },
+    "data_conciliacao": {
+      "type": "string",
+      "title": "Data e Hora da Concilia\u00e7\u00e3o"
+    },
+    "usuario_conciliador": {
+      "type": "string",
+      "title": "Usu\u00e1rio Conciliador"
+    },
+    "status_conciliacao": {
+      "type": "string",
+      "title": "Status da Concilia\u00e7\u00e3o",
+      "enum": [
+        "pendente",
+        "parcialmente_conciliado",
+        "conciliado",
+        "divergente"
+      ],
+      "default": "pendente"
+    },
+    "valor_conciliado": {
+      "type": "number",
+      "title": "Valor Conciliado",
+      "default": 0
+    },
+    "ids_lancamentos": {
+      "type": "array",
+      "title": "IDs dos Lan\u00e7amentos Vinculados",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "historico_conciliacao": {
+      "type": "array",
+      "title": "Hist\u00f3rico de Concilia\u00e7\u00e3o",
+      "items": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string"
+          },
+          "usuario": {
+            "type": "string"
+          },
+          "acao": {
+            "type": "string"
+          },
+          "detalhes": {
+            "type": "string"
+          }
+        }
+      },
+      "default": []
+    }
+  },
+  "required": [
+    "conta_bancaria_id",
+    "data_transacao",
+    "tipo",
+    "descricao",
+    "valor"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

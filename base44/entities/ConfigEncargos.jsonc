@@ -1,0 +1,75 @@
+{
+  "name": "ConfigEncargos",
+  "type": "object",
+  "properties": {
+    "empresa_id": {
+      "type": "string",
+      "title": "Empresa ID"
+    },
+    "empresa_nome": {
+      "type": "string",
+      "title": "Raz\u00e3o Social"
+    },
+    "cnpj": {
+      "type": "string",
+      "title": "CNPJ"
+    },
+    "regime_tributario": {
+      "type": "string",
+      "title": "Regime Tribut\u00e1rio",
+      "enum": [
+        "simples_nacional",
+        "lucro_presumido",
+        "lucro_real"
+      ],
+      "default": "simples_nacional"
+    },
+    "cpp_no_das": {
+      "type": "boolean",
+      "title": "CPP recolhida no DAS (Simples Nacional)",
+      "default": true
+    },
+    "inss_patronal_percentual": {
+      "type": "number",
+      "title": "INSS Patronal (%)",
+      "default": 20
+    },
+    "rat_percentual": {
+      "type": "number",
+      "title": "RAT (%)",
+      "default": 2
+    },
+    "terceiros_percentual": {
+      "type": "number",
+      "title": "Terceiros (%)",
+      "default": 5.8
+    },
+    "fgts_percentual": {
+      "type": "number",
+      "title": "FGTS (%)",
+      "default": 8
+    },
+    "ativa": {
+      "type": "boolean",
+      "title": "Configura\u00e7\u00e3o Ativa",
+      "default": true
+    }
+  },
+  "required": [
+    "regime_tributario"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

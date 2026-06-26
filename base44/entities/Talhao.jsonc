@@ -1,0 +1,63 @@
+{
+  "name": "Talhao",
+  "type": "object",
+  "properties": {
+    "fazenda_id": {
+      "type": "string",
+      "title": "Fazenda ID"
+    },
+    "fazenda_nome": {
+      "type": "string",
+      "title": "Fazenda"
+    },
+    "nome": {
+      "type": "string",
+      "title": "Nome do Talh\u00e3o"
+    },
+    "area": {
+      "type": "number",
+      "title": "\u00c1rea (ha)",
+      "default": 0
+    },
+    "tipo_solo": {
+      "type": "string",
+      "title": "Tipo de Solo"
+    },
+    "cultura_atual": {
+      "type": "string",
+      "title": "Cultura Atual"
+    },
+    "irrigado": {
+      "type": "boolean",
+      "title": "Irrigado",
+      "default": false
+    },
+    "coordenadas": {
+      "type": "string",
+      "title": "Coordenadas (lat,lng)"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "fazenda_id",
+    "nome",
+    "area"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

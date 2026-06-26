@@ -1,0 +1,67 @@
+{
+  "name": "TabelaIRRF",
+  "type": "object",
+  "properties": {
+    "competencia": {
+      "type": "string",
+      "title": "Compet\u00eancia Vigente (YYYY-MM)"
+    },
+    "faixas": {
+      "type": "array",
+      "title": "Faixas",
+      "items": {
+        "type": "object",
+        "properties": {
+          "faixa_inicial": {
+            "type": "number"
+          },
+          "faixa_final": {
+            "type": "number"
+          },
+          "aliquota": {
+            "type": "number"
+          },
+          "parcela_deduzir": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "desconto_simplificado": {
+      "type": "number",
+      "title": "Desconto Simplificado (R$)",
+      "default": 564.8
+    },
+    "deducao_dependente": {
+      "type": "number",
+      "title": "Dedu\u00e7\u00e3o por Dependente (R$)",
+      "default": 189.59
+    },
+    "reducao_mensal": {
+      "type": "number",
+      "title": "Redu\u00e7\u00e3o Mensal (R$)",
+      "default": 0
+    }
+  },
+  "required": [
+    "competencia"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {},
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

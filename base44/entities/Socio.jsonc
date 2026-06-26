@@ -1,0 +1,98 @@
+{
+  "name": "Socio",
+  "type": "object",
+  "properties": {
+    "nome": {
+      "type": "string",
+      "title": "Nome"
+    },
+    "cpf": {
+      "type": "string",
+      "title": "CPF"
+    },
+    "participacao": {
+      "type": "number",
+      "title": "Participa\u00e7\u00e3o (%)",
+      "default": 0
+    },
+    "cargo": {
+      "type": "string",
+      "title": "Cargo / Fun\u00e7\u00e3o"
+    },
+    "email": {
+      "type": "string",
+      "title": "E-mail"
+    },
+    "telefone": {
+      "type": "string",
+      "title": "Telefone"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Ativo",
+        "Inativo"
+      ],
+      "title": "Status",
+      "default": "Ativo"
+    },
+    "retem_irrf": {
+      "type": "boolean",
+      "title": "Ret\u00e9m IRPF",
+      "default": false
+    }
+  },
+  "required": [
+    "nome"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

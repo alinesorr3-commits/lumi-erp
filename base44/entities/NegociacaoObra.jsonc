@@ -1,0 +1,139 @@
+{
+  "name": "NegociacaoObra",
+  "type": "object",
+  "properties": {
+    "obra_id": {
+      "type": "string",
+      "title": "Obra Vinculada"
+    },
+    "obra_nome": {
+      "type": "string",
+      "title": "Nome da Obra"
+    },
+    "classificacao_operacao": {
+      "type": "string",
+      "title": "Classifica\u00e7\u00e3o da Opera\u00e7\u00e3o"
+    },
+    "classificacao": {
+      "type": "string",
+      "title": "Classifica\u00e7\u00e3o (Novo)"
+    },
+    "integracao_com": {
+      "type": "string",
+      "title": "Integra\u00e7\u00e3o com"
+    },
+    "integracao": {
+      "type": "string",
+      "title": "Integra\u00e7\u00e3o"
+    },
+    "forma_recebimento": {
+      "type": "string",
+      "title": "Forma de Recebimento"
+    },
+    "tipo_registro": {
+      "type": "string",
+      "title": "Tipo de Registro"
+    },
+    "destino_bem": {
+      "type": "string",
+      "title": "Destino do Bem"
+    },
+    "descricao_bem": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o do Bem"
+    },
+    "valor_bem": {
+      "type": "number",
+      "title": "Valor do Bem",
+      "default": 0
+    },
+    "data": {
+      "type": "string",
+      "format": "date",
+      "title": "Data"
+    },
+    "terceiro": {
+      "type": "string",
+      "title": "Terceiro"
+    },
+    "descricao": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o"
+    },
+    "valor": {
+      "type": "number",
+      "title": "Valor (R$)",
+      "default": 0
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    },
+    "cheque_agencia": {
+      "type": "string",
+      "title": "Ag\u00eancia do Cheque"
+    },
+    "cheque_conta": {
+      "type": "string",
+      "title": "Conta do Cheque"
+    },
+    "cheque_emissor": {
+      "type": "string",
+      "title": "Dados do Emissor"
+    }
+  },
+  "required": [
+    "forma_recebimento",
+    "descricao"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

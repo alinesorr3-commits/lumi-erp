@@ -1,0 +1,123 @@
+{
+  "name": "Cliente",
+  "type": "object",
+  "properties": {
+    "nome": {
+      "type": "string",
+      "title": "Nome"
+    },
+    "tipo": {
+      "type": "string",
+      "enum": [
+        "PF",
+        "PJ"
+      ],
+      "title": "Tipo",
+      "default": "PJ"
+    },
+    "cpf_cnpj": {
+      "type": "string",
+      "title": "CPF/CNPJ"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "title": "E-mail"
+    },
+    "telefone": {
+      "type": "string",
+      "title": "Telefone"
+    },
+    "segmento": {
+      "type": "string",
+      "title": "Segmento"
+    },
+    "responsavel": {
+      "type": "string",
+      "title": "Respons\u00e1vel"
+    },
+    "endereco": {
+      "type": "string",
+      "title": "Endere\u00e7o"
+    },
+    "cidade": {
+      "type": "string",
+      "title": "Cidade"
+    },
+    "estado": {
+      "type": "string",
+      "title": "Estado"
+    },
+    "cep": {
+      "type": "string",
+      "title": "CEP"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ativo",
+        "inativo",
+        "prospecto"
+      ],
+      "title": "Status",
+      "default": "ativo"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "nome"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

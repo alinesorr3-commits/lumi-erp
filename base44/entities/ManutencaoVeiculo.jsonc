@@ -1,0 +1,132 @@
+{
+  "name": "ManutencaoVeiculo",
+  "type": "object",
+  "properties": {
+    "veiculo_id": {
+      "type": "string",
+      "title": "Ve\u00edculo ID"
+    },
+    "veiculo_placa": {
+      "type": "string",
+      "title": "Placa"
+    },
+    "tipo": {
+      "type": "string",
+      "title": "Tipo",
+      "enum": [
+        "Preventiva",
+        "Corretiva",
+        "Revis\u00e3o",
+        "Troca de \u00f3leo",
+        "Pneus",
+        "Funilaria/Pintura",
+        "El\u00e9trica",
+        "Outro"
+      ],
+      "default": "Preventiva"
+    },
+    "descricao": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o do Servi\u00e7o"
+    },
+    "oficina": {
+      "type": "string",
+      "title": "Oficina / Fornecedor"
+    },
+    "data": {
+      "type": "string",
+      "format": "date",
+      "title": "Data"
+    },
+    "hodometro": {
+      "type": "number",
+      "title": "Hod\u00f4metro (km)"
+    },
+    "valor_pecas": {
+      "type": "number",
+      "title": "Valor Pe\u00e7as (R$)",
+      "default": 0
+    },
+    "valor_servico": {
+      "type": "number",
+      "title": "Valor Servi\u00e7o (R$)",
+      "default": 0
+    },
+    "valor_total": {
+      "type": "number",
+      "title": "Total (R$)",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Agendada",
+        "Em andamento",
+        "Conclu\u00edda",
+        "Cancelada"
+      ],
+      "default": "Conclu\u00edda"
+    },
+    "nfe_manutencao_id": {
+      "type": "string",
+      "title": "NF-e Manuten\u00e7\u00e3o"
+    },
+    "nfe_manutencao_numero": {
+      "type": "string",
+      "title": "N\u00famero NF Manuten\u00e7\u00e3o"
+    },
+    "nfse_manutencao_id": {
+      "type": "string",
+      "title": "NFS-e Manuten\u00e7\u00e3o"
+    },
+    "nfse_manutencao_numero": {
+      "type": "string",
+      "title": "N\u00famero NFS-e Manuten\u00e7\u00e3o"
+    },
+    "nfe_pecas_id": {
+      "type": "string",
+      "title": "NF-e Pe\u00e7as"
+    },
+    "nfe_pecas_numero": {
+      "type": "string",
+      "title": "N\u00famero NF Pe\u00e7as"
+    },
+    "garantia_km": {
+      "type": "number",
+      "title": "Garantia (km)"
+    },
+    "garantia_data": {
+      "type": "string",
+      "format": "date",
+      "title": "Garantia at\u00e9"
+    },
+    "proxima_revisao_km": {
+      "type": "number",
+      "title": "Pr\u00f3xima Revis\u00e3o (km)"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "veiculo_id",
+    "tipo",
+    "data"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

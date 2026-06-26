@@ -1,0 +1,107 @@
+{
+  "name": "ProLabore",
+  "type": "object",
+  "properties": {
+    "socio_id": {
+      "type": "string",
+      "title": "S\u00f3cio ID"
+    },
+    "socio_nome": {
+      "type": "string",
+      "title": "Nome do S\u00f3cio"
+    },
+    "mes_referencia": {
+      "type": "string",
+      "title": "M\u00eas de Refer\u00eancia"
+    },
+    "valor_bruto": {
+      "type": "number",
+      "title": "Valor Bruto"
+    },
+    "inss": {
+      "type": "number",
+      "title": "INSS",
+      "default": 0
+    },
+    "irrf": {
+      "type": "number",
+      "title": "IRRF",
+      "default": 0
+    },
+    "valor_liquido": {
+      "type": "number",
+      "title": "Valor L\u00edquido",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "rascunho",
+        "aprovado",
+        "pago"
+      ],
+      "title": "Status",
+      "default": "rascunho"
+    },
+    "data_pagamento": {
+      "type": "string",
+      "format": "date",
+      "title": "Data de Pagamento"
+    }
+  },
+  "required": [
+    "socio_id",
+    "mes_referencia",
+    "valor_bruto"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

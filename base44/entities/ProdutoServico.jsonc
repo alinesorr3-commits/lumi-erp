@@ -1,0 +1,183 @@
+{
+  "name": "ProdutoServico",
+  "type": "object",
+  "properties": {
+    "empresa_id": {
+      "type": "string",
+      "title": "Empresa ID"
+    },
+    "tipo": {
+      "type": "string",
+      "title": "Tipo",
+      "enum": [
+        "Produto",
+        "Servi\u00e7o"
+      ],
+      "default": "Produto"
+    },
+    "classificacao": {
+      "type": "string",
+      "title": "Classifica\u00e7\u00e3o do Estoque",
+      "enum": [
+        "Revenda",
+        "Produ\u00e7\u00e3o",
+        "Uso e Consumo",
+        "S\u00f3cios"
+      ],
+      "default": "Revenda"
+    },
+    "codigo": {
+      "type": "string",
+      "title": "C\u00f3digo"
+    },
+    "descricao": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o"
+    },
+    "ncm": {
+      "type": "string",
+      "title": "NCM"
+    },
+    "cest": {
+      "type": "string",
+      "title": "CEST"
+    },
+    "cfop_saida": {
+      "type": "string",
+      "title": "CFOP Sa\u00edda",
+      "default": "5102"
+    },
+    "unidade": {
+      "type": "string",
+      "title": "Unidade",
+      "default": "UN"
+    },
+    "preco_venda": {
+      "type": "number",
+      "title": "Pre\u00e7o de Venda",
+      "default": 0
+    },
+    "preco_custo": {
+      "type": "number",
+      "title": "Pre\u00e7o de Custo",
+      "default": 0
+    },
+    "estoque_atual": {
+      "type": "number",
+      "title": "Estoque Atual",
+      "default": 0
+    },
+    "estoque_minimo": {
+      "type": "number",
+      "title": "Estoque M\u00ednimo",
+      "default": 0
+    },
+    "origem": {
+      "type": "string",
+      "title": "Origem",
+      "enum": [
+        "0-Nacional",
+        "1-Estrangeira Importada",
+        "2-Estrangeira-Mercado Interno"
+      ],
+      "default": "0-Nacional"
+    },
+    "cst_icms": {
+      "type": "string",
+      "title": "CST/CSOSN ICMS"
+    },
+    "aliq_icms": {
+      "type": "number",
+      "title": "Al\u00edquota ICMS (%)",
+      "default": 12
+    },
+    "mva": {
+      "type": "number",
+      "title": "MVA (%)",
+      "default": 0
+    },
+    "cst_pis": {
+      "type": "string",
+      "title": "CST PIS",
+      "default": "07"
+    },
+    "aliq_pis": {
+      "type": "number",
+      "title": "Al\u00edquota PIS (%)",
+      "default": 0
+    },
+    "cst_cofins": {
+      "type": "string",
+      "title": "CST COFINS",
+      "default": "07"
+    },
+    "aliq_cofins": {
+      "type": "number",
+      "title": "Al\u00edquota COFINS (%)",
+      "default": 0
+    },
+    "aliq_ipi": {
+      "type": "number",
+      "title": "Al\u00edquota IPI (%)",
+      "default": 0
+    },
+    "codigo_servico_lc116": {
+      "type": "string",
+      "title": "C\u00f3digo Servi\u00e7o LC116 (NFS-e)"
+    },
+    "aliq_iss": {
+      "type": "number",
+      "title": "Al\u00edquota ISS (%)",
+      "default": 0
+    },
+    "ativo": {
+      "type": "boolean",
+      "title": "Ativo",
+      "default": true
+    }
+  },
+  "required": [
+    "descricao"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

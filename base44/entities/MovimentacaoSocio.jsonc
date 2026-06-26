@@ -1,0 +1,80 @@
+{
+  "name": "MovimentacaoSocio",
+  "type": "object",
+  "properties": {
+    "socio_id": {
+      "type": "string",
+      "title": "S\u00f3cio ID"
+    },
+    "socio_nome": {
+      "type": "string",
+      "title": "S\u00f3cio"
+    },
+    "tipo": {
+      "type": "string",
+      "title": "Tipo de Movimenta\u00e7\u00e3o",
+      "enum": [
+        "Retirada",
+        "Aporte",
+        "Pr\u00f3-labore",
+        "Dividendo",
+        "Empr\u00e9stimo",
+        "Devolu\u00e7\u00e3o"
+      ]
+    },
+    "descricao": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o"
+    },
+    "valor": {
+      "type": "number",
+      "title": "Valor (R$)",
+      "default": 0
+    },
+    "data": {
+      "type": "string",
+      "format": "date",
+      "title": "Data"
+    },
+    "vinculacao": {
+      "type": "string",
+      "title": "Vincula\u00e7\u00e3o",
+      "enum": [
+        "Empresa (CNPJ)",
+        "CPF Pessoal",
+        "Holding",
+        "Outro"
+      ],
+      "default": "Empresa (CNPJ)"
+    },
+    "nome_terceiro": {
+      "type": "string",
+      "title": "Nome Terceiro"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "socio_id",
+    "tipo",
+    "descricao",
+    "valor",
+    "data"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

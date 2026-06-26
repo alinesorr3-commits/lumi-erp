@@ -1,0 +1,86 @@
+{
+  "name": "Fazenda",
+  "type": "object",
+  "properties": {
+    "nome": {
+      "type": "string",
+      "title": "Nome da Fazenda"
+    },
+    "proprietario": {
+      "type": "string",
+      "title": "Propriet\u00e1rio"
+    },
+    "cpf_cnpj": {
+      "type": "string",
+      "title": "CPF/CNPJ"
+    },
+    "matricula": {
+      "type": "string",
+      "title": "Matr\u00edcula / CAR"
+    },
+    "area_total": {
+      "type": "number",
+      "title": "\u00c1rea Total (ha)",
+      "default": 0
+    },
+    "area_agricola": {
+      "type": "number",
+      "title": "\u00c1rea Agr\u00edcola (ha)",
+      "default": 0
+    },
+    "municipio": {
+      "type": "string",
+      "title": "Munic\u00edpio"
+    },
+    "estado": {
+      "type": "string",
+      "title": "Estado"
+    },
+    "regiao": {
+      "type": "string",
+      "title": "Regi\u00e3o",
+      "enum": [
+        "Norte",
+        "Nordeste",
+        "Centro-Oeste",
+        "Sudeste",
+        "Sul"
+      ]
+    },
+    "tipo_solo": {
+      "type": "string",
+      "title": "Tipo de Solo"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Ativa",
+        "Inativa",
+        "Arrendada"
+      ],
+      "default": "Ativa"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "nome"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

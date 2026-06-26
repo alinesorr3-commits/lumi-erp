@@ -1,0 +1,88 @@
+{
+  "name": "PrestadorServico",
+  "type": "object",
+  "properties": {
+    "nome": {
+      "type": "string",
+      "title": "Nome"
+    },
+    "cargo_funcao": {
+      "type": "string",
+      "title": "Cargo / Fun\u00e7\u00e3o"
+    },
+    "tipo_contrato": {
+      "type": "string",
+      "title": "Tipo de Contrato",
+      "enum": [
+        "Aut\u00f4nomo",
+        "PJ",
+        "Eventual",
+        "Consultor"
+      ],
+      "default": "Aut\u00f4nomo"
+    },
+    "cpf_cnpj": {
+      "type": "string",
+      "title": "CPF/CNPJ"
+    },
+    "chave_pix": {
+      "type": "string",
+      "title": "Chave PIX"
+    },
+    "banco": {
+      "type": "string",
+      "title": "Banco"
+    },
+    "agencia": {
+      "type": "string",
+      "title": "Ag\u00eancia"
+    },
+    "conta": {
+      "type": "string",
+      "title": "Conta"
+    },
+    "valor_contrato": {
+      "type": "number",
+      "title": "Valor do Contrato (R$)",
+      "default": 0
+    },
+    "quantidade_parcelas": {
+      "type": "number",
+      "title": "Quantidade de Parcelas"
+    },
+    "descricao_contrato": {
+      "type": "string",
+      "title": "Descri\u00e7\u00e3o do Contrato"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "Ativo",
+        "Inativo"
+      ],
+      "default": "Ativo"
+    },
+    "observacoes": {
+      "type": "string",
+      "title": "Observa\u00e7\u00f5es"
+    }
+  },
+  "required": [
+    "nome"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "created_by_id": "{{user.id}}"
+    }
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "name": "PlanoContas",
+  "type": "object",
+  "properties": {
+    "codigo": {
+      "type": "string",
+      "title": "C\u00f3digo da Conta"
+    },
+    "nome": {
+      "type": "string",
+      "title": "Nome da Conta"
+    },
+    "tipo": {
+      "type": "string",
+      "title": "Tipo",
+      "enum": [
+        "Ativo Circulante",
+        "Ativo N\u00e3o Circulante",
+        "Passivo Circulante",
+        "Passivo N\u00e3o Circulante",
+        "Patrim\u00f4nio L\u00edquido",
+        "Receita",
+        "Despesa"
+      ],
+      "default": "Ativo Circulante"
+    },
+    "grupo": {
+      "type": "string",
+      "title": "Grupo de Contas",
+      "enum": [
+        "Disponibilidades",
+        "Direitos",
+        "Estoques",
+        "Imobiliza\u00e7\u00f5es",
+        "Fornecedores",
+        "Financiamentos",
+        "Capital",
+        "Lucros",
+        "Vendas",
+        "COGS",
+        "Operacional",
+        "Financeira",
+        "Tribut\u00e1ria"
+      ]
+    },
+    "hierarquia_nivel": {
+      "type": "number",
+      "title": "N\u00edvel Hier\u00e1rquico",
+      "default": 0
+    },
+    "valor": {
+      "type": "number",
+      "title": "Valor (R$)",
+      "default": 0
+    },
+    "ativa": {
+      "type": "boolean",
+      "title": "Ativa",
+      "default": true
+    }
+  },
+  "required": [
+    "codigo",
+    "nome",
+    "tipo"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
